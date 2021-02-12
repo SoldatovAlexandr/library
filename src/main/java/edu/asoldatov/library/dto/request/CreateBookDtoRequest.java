@@ -15,7 +15,7 @@ public class CreateBookDtoRequest {
     private String name;
 
     @NotNull(message = "YEAR_OF_PUBLISHING_NOT_SET")
-    private int yearOfPublishing;
+    private Integer yearOfPublishing;
 
     @NotNull(message = "GENRE_ID_NOT_SET")
     private Long genreId;

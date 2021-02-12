@@ -6,9 +6,9 @@ import java.lang.annotation.*;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UpdateBookValidator.class)
+@Constraint(validatedBy = UpdateAuthorValidator.class)
 @Documented
-public @interface UpdateBook {
+public @interface UpdateAuthor {
     String message() default "PARAMS_NOT_SET";
 
     Class<?>[] groups() default {};
@@ -21,10 +21,14 @@ public @interface UpdateBook {
 
     String third();
 
+    String forth();
+
+    String fifth();
+
     @Target({ElementType.TYPE})
     @Retention(RetentionPolicy.RUNTIME)
     @Documented
     @interface List {
-        UpdateBook[] value();
+        UpdateAuthor[] value();
     }
 }

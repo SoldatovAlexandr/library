@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class UpdateBookDtoRequest {
     private String name;
 
-    private int yearOfPublishing;
+    private Integer yearOfPublishing;
 
-    private long genreId;
+    private Long genreId;
 }

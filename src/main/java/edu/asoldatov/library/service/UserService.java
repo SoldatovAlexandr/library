@@ -1,4 +1,4 @@
 package edu.asoldatov.library.service;
 
-public interface UserService    {
+public interface UserService {
 }

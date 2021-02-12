@@ -1,7 +1,7 @@
 package edu.asoldatov.library.erroritem.code;
 
 public enum ServerErrorCodeWithField {
-    //TODO
+    WRONG_AUTHOR_ID("wrong author id", "id"),
     WRONG_GENRE_ID("wrong genre id", "id"),
     WRONG_BOOK_ID("wrong book id", "id"),
     WRONG_ID("wrong id", "id");

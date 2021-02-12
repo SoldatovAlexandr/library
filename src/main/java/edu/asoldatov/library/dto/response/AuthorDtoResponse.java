@@ -5,18 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BookDtoResponse {
+public class AuthorDtoResponse {
     private long id;
 
-    private String name;
+    private String firstName;
 
-    private int yearOfPublishing;
+    private String lastName;
 
-    private List<String> genres;
+    private String patronymic;
+
+    private int yearOfBirth;
+
+    private String biography;
 }

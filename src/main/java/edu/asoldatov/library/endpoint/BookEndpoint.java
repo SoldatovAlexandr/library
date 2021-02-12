@@ -69,5 +69,4 @@ public class BookEndpoint {
         LOGGER.info("BookEndpoint return book");
         return bookService.returnBook(bookId);
     }
-
 }

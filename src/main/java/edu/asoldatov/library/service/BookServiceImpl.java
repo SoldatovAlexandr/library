@@ -1,7 +1,9 @@
 package edu.asoldatov.library.service;
 
+import edu.asoldatov.library.dao.AuthorDao;
 import edu.asoldatov.library.dao.BookDao;
 import edu.asoldatov.library.dao.GenreDao;
+import edu.asoldatov.library.dao.UserDao;
 import edu.asoldatov.library.dto.mapper.BookDtoMapper;
 import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
 import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
@@ -14,12 +16,15 @@ import edu.asoldatov.library.model.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class BookServiceImpl extends ServiceBase implements BookService {
 
     @Autowired
-    public BookServiceImpl(BookDao bookDao, GenreDao genreDao) {
-        super(bookDao, genreDao);
+    public BookServiceImpl(BookDao bookDao, GenreDao genreDao, UserDao userDao, AuthorDao authorDao) {
+        super(bookDao, genreDao, userDao, authorDao);
     }
 
     @Override
@@ -30,7 +35,11 @@ public class BookServiceImpl extends ServiceBase implements BookService {
 
         Genre genre = getGenreById(genreId);
 
-        book.setGenre(genre);
+        List<Genre> genres = new ArrayList<>();
+
+        genres.add(genre);
+
+        book.setGenres(genres);
 
         bookDao.insert(book);
 
@@ -58,7 +67,7 @@ public class BookServiceImpl extends ServiceBase implements BookService {
         if (genreId != null) {
             Genre genre = getGenreById(genreId);
 
-            book.setGenre(genre);
+            book.getGenres().add(genre);
         }
 
         bookDao.update(book);

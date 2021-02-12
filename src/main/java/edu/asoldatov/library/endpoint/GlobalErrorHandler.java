@@ -24,8 +24,6 @@ import java.util.List;
 public class GlobalErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalErrorHandler.class);
 
-    //TODO CHECK METHODS
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody

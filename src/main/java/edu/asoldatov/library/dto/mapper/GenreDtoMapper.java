@@ -12,23 +12,14 @@ import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
-public class GenreDtoMapper {
+public abstract class GenreDtoMapper {
     public static final GenreDtoMapper INSTANCE = Mappers.getMapper(GenreDtoMapper.class);
 
-    public GenreDtoResponse toGenreDtoResponse(Genre genre) {
-        return new GenreDtoResponse(
-                genre.getId(),
-                genre.getName()
-        );
-    }
+    public abstract GenreDtoResponse toGenreDtoResponse(Genre genre);
 
-    public Genre toGenre(CreateGenreDtoRequest request) {
-        return new Genre(
-                request.getName()
-        );
-    }
+    public abstract Genre toGenre(CreateGenreDtoRequest request);
 
-    public List<GenreDtoResponse> toGenreDtoResponses(List<Genre> genres) {
+    public List<GenreDtoResponse> toGenreDtoResponses(Iterable<Genre> genres) {
         List<GenreDtoResponse> responses = new ArrayList<>();
 
         for (Genre genre : genres) {

@@ -2,10 +2,10 @@ package edu.asoldatov.library.dao;
 
 import edu.asoldatov.library.model.Genre;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface GenreDao {
-    Genre getById(Long genreId);
+    Optional<Genre> getById(Long genreId);
 
     void update(Genre genre);
 
@@ -13,5 +13,5 @@ public interface GenreDao {
 
     void insert(Genre genre);
 
-    List<Genre> getAll();
+    Iterable<Genre> getAll();
 }

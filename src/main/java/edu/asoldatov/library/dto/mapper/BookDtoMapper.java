@@ -3,28 +3,26 @@ package edu.asoldatov.library.dto.mapper;
 import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.model.Book;
+import edu.asoldatov.library.model.Genre;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
+import java.util.stream.Collectors;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
-public class BookDtoMapper {
+public abstract class BookDtoMapper {
     public static final BookDtoMapper INSTANCE = Mappers.getMapper(BookDtoMapper.class);
 
-    public Book toBook(CreateBookDtoRequest request) {
-        return new Book(
-                request.getName(),
-                request.getYearOfPublishing()
-        );
-    }
+    public abstract Book toBook(CreateBookDtoRequest request);
 
     public BookDtoResponse toBookDtoResponse(Book book) {
         return new BookDtoResponse(
                 book.getId(),
                 book.getName(),
                 book.getYearOfPublishing(),
-                book.getGenre().getName()
+                book.getGenres().stream().map(Genre::getName).collect(Collectors.toList())
         );
     }
 }

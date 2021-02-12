@@ -19,5 +19,5 @@ public class UserEndpoint {
         this.userService = userService;
     }
 
-    
+
 }
