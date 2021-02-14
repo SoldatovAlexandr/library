@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +24,5 @@ public class AuthorDtoResponse {
 
     private String biography;
 
-    private List<BookDtoResponse> books;
+    private Set<BookDtoResponse> books;
 }

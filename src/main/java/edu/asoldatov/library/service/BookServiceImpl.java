@@ -7,7 +7,6 @@ import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
 import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
 import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
-import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.Author;
@@ -77,11 +76,6 @@ public class BookServiceImpl extends ServiceBase implements BookService {
         return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
     }
 
-    //TODO
-    @Override
-    public UserDtoResponse getBookOwner(long bookId) {
-        return null;
-    }
 
     @Override
     public BookDtoResponse takeBook(long bookId, User user) throws ServerException {
@@ -109,6 +103,8 @@ public class BookServiceImpl extends ServiceBase implements BookService {
         }
 
         book.setUser(null);
+
+        bookDao.update(book);
 
         return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
     }

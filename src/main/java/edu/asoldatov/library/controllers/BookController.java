@@ -135,7 +135,8 @@ public class BookController {
     }
 
     @PostMapping(value = "/books/{bookId}/take")
-    public String takeBook(@PathVariable("bookId") long bookId, Model model,
+    public String takeBook(@PathVariable("bookId") long bookId,
+                           Model model,
                            @AuthenticationPrincipal User user) throws ServerException {
         LOGGER.info("BookController take the book");
 
@@ -154,7 +155,8 @@ public class BookController {
 
 
     @PostMapping(value = "/books/{bookId}/return")
-    public String returnBook(@PathVariable("bookId") long bookId, Model model,
+    public String returnBook(@PathVariable("bookId") long bookId,
+                             Model model,
                              @AuthenticationPrincipal User user) throws ServerException {
         LOGGER.info("BookController return book");
 

@@ -3,7 +3,6 @@ package edu.asoldatov.library.endpoint;
 import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
 import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
-import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.BookService;
 import org.slf4j.Logger;
@@ -44,6 +43,8 @@ public class BookEndpoint {
         return bookService.updateBook(request, bookId);
     }
 
+    //TODO
+    /*
     //редактор
     //просмотр у кого находится книга;
     @GetMapping(value = "/{bookId}/owners", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,8 +53,7 @@ public class BookEndpoint {
         return bookService.getBookOwner(bookId);
     }
 
-    //TODO
-    /*
+
     //читатель
     //взять книгу на время
     @PostMapping(value = "/{bookId}/owners", produces = MediaType.APPLICATION_JSON_VALUE)

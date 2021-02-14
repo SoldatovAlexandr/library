@@ -11,5 +11,5 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class AddBookToAuthorDtoRequest {
     @NotNull(message = "BOOK_ID_NOT_SET")
-    private Integer bookId;
+    private Long bookId;
 }

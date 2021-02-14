@@ -19,7 +19,7 @@ public abstract class UserDtoMapper {
     public User toUser(RegisterUserDtoRequest request) {
         return new User(
                 request.getUsername(),
-                request.getPassword(),
+                request.getFirstName(),
                 request.getLastName(),
                 request.getPatronymic(),
                 request.getYearOfBirth()

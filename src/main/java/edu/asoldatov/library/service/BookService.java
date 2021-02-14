@@ -6,7 +6,6 @@ import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
 import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
 import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
-import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.User;
 
@@ -16,8 +15,6 @@ public interface BookService {
     BookDtoResponse createBook(CreateBookDtoRequest request) throws ServerException;
 
     BookDtoResponse updateBook(UpdateBookDtoRequest request, long bookId) throws ServerException;
-
-    UserDtoResponse getBookOwner(long bookId);
 
     BookDtoResponse takeBook(long bookId, User user) throws ServerException;
 

@@ -32,7 +32,7 @@ public abstract class AuthorDtoMapper {
                 author.getPatronymic(),
                 author.getYearOfBirth(),
                 author.getBiography(),
-                author.getBooks().stream().map(this::bookDtoResponseWithoutAuthorsAndGenres).collect(Collectors.toList())
+                author.getBooks().stream().map(this::bookDtoResponseWithoutAuthorsAndGenres).collect(Collectors.toSet())
         );
     }
 

@@ -13,6 +13,7 @@ import edu.asoldatov.library.model.Author;
 import edu.asoldatov.library.model.Book;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +25,8 @@ public class AuthorServiceImpl extends ServiceBase implements AuthorService {
     @Override
     public AuthorDtoResponse createAuthor(CreateAuthorDtoRequest request) {
         Author author = AuthorDtoMapper.INSTANCE.toAuthor(request);
+
+        author.setBooks(new ArrayList<>());
 
         authorDao.insert(author);
 
