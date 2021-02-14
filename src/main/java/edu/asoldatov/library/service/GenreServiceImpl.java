@@ -1,9 +1,6 @@
 package edu.asoldatov.library.service;
 
-import edu.asoldatov.library.dao.AuthorDao;
-import edu.asoldatov.library.dao.BookDao;
-import edu.asoldatov.library.dao.GenreDao;
-import edu.asoldatov.library.dao.UserDao;
+import edu.asoldatov.library.dao.*;
 import edu.asoldatov.library.dto.mapper.GenreDtoMapper;
 import edu.asoldatov.library.dto.request.CreateGenreDtoRequest;
 import edu.asoldatov.library.dto.response.EmptyDtoResponse;
@@ -17,8 +14,8 @@ import java.util.List;
 @Service
 public class GenreServiceImpl extends ServiceBase implements GenreService {
 
-    protected GenreServiceImpl(BookDao bookDao, GenreDao genreDao, UserDao userDao, AuthorDao authorDao) {
-        super(bookDao, genreDao, userDao, authorDao);
+    protected GenreServiceImpl(BookDao bookDao, GenreDao genreDao, UserDao userDao, AuthorDao authorDao, RoleDao roleDao) {
+        super(bookDao, genreDao, userDao, authorDao, roleDao);
     }
 
     @Override

@@ -2,6 +2,7 @@ package edu.asoldatov.library.dao;
 
 import edu.asoldatov.library.model.Author;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AuthorDao {
@@ -10,4 +11,6 @@ public interface AuthorDao {
     void insert(Author author);
 
     void update(Author author);
+
+    List<Author> getAllAuthors();
 }

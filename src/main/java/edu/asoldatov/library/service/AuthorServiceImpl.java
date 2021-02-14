@@ -1,9 +1,6 @@
 package edu.asoldatov.library.service;
 
-import edu.asoldatov.library.dao.AuthorDao;
-import edu.asoldatov.library.dao.BookDao;
-import edu.asoldatov.library.dao.GenreDao;
-import edu.asoldatov.library.dao.UserDao;
+import edu.asoldatov.library.dao.*;
 import edu.asoldatov.library.dto.mapper.AuthorDtoMapper;
 import edu.asoldatov.library.dto.request.AddBookToAuthorDtoRequest;
 import edu.asoldatov.library.dto.request.CreateAuthorDtoRequest;
@@ -16,10 +13,12 @@ import edu.asoldatov.library.model.Author;
 import edu.asoldatov.library.model.Book;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthorServiceImpl extends ServiceBase implements AuthorService {
-    protected AuthorServiceImpl(BookDao bookDao, GenreDao genreDao, UserDao userDao, AuthorDao authorDao) {
-        super(bookDao, genreDao, userDao, authorDao);
+    protected AuthorServiceImpl(BookDao bookDao, GenreDao genreDao, UserDao userDao, AuthorDao authorDao, RoleDao roleDao) {
+        super(bookDao, genreDao, userDao, authorDao, roleDao);
     }
 
     @Override
@@ -94,5 +93,19 @@ public class AuthorServiceImpl extends ServiceBase implements AuthorService {
         authorDao.update(author);
 
         return new EmptyDtoResponse();
+    }
+
+    @Override
+    public List<AuthorDtoResponse> getAllAuthors() {
+        List<Author> authors = authorDao.getAllAuthors();
+
+        return AuthorDtoMapper.INSTANCE.toAuthorDtoResponses(authors);
+    }
+
+    @Override
+    public AuthorDtoResponse getAuthor(long authorId) throws ServerException {
+        Author author = getAuthorById(authorId);
+
+        return AuthorDtoMapper.INSTANCE.toAuthorDtoResponse(author);
     }
 }

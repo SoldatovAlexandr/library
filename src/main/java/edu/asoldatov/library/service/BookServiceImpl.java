@@ -1,30 +1,32 @@
 package edu.asoldatov.library.service;
 
-import edu.asoldatov.library.dao.AuthorDao;
-import edu.asoldatov.library.dao.BookDao;
-import edu.asoldatov.library.dao.GenreDao;
-import edu.asoldatov.library.dao.UserDao;
+import edu.asoldatov.library.dao.*;
 import edu.asoldatov.library.dto.mapper.BookDtoMapper;
+import edu.asoldatov.library.dto.request.AddAuthorToBookDtoRequest;
 import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
+import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
 import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
-import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
+import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
 import edu.asoldatov.library.erroritem.exception.ServerException;
+import edu.asoldatov.library.model.Author;
 import edu.asoldatov.library.model.Book;
 import edu.asoldatov.library.model.Genre;
+import edu.asoldatov.library.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BookServiceImpl extends ServiceBase implements BookService {
 
     @Autowired
-    public BookServiceImpl(BookDao bookDao, GenreDao genreDao, UserDao userDao, AuthorDao authorDao) {
-        super(bookDao, genreDao, userDao, authorDao);
+    public BookServiceImpl(BookDao bookDao, GenreDao genreDao, UserDao userDao, AuthorDao authorDao, RoleDao roleDao) {
+        super(bookDao, genreDao, userDao, authorDao, roleDao);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class BookServiceImpl extends ServiceBase implements BookService {
 
         Genre genre = getGenreById(genreId);
 
-        List<Genre> genres = new ArrayList<>();
+        Set<Genre> genres = new HashSet<>();
 
         genres.add(genre);
 
@@ -75,19 +77,84 @@ public class BookServiceImpl extends ServiceBase implements BookService {
         return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
     }
 
-
+    //TODO
     @Override
     public UserDtoResponse getBookOwner(long bookId) {
         return null;
     }
 
     @Override
-    public EmptyDtoResponse takeBook(long bookId) {
-        return null;
+    public BookDtoResponse takeBook(long bookId, User user) throws ServerException {
+        Book book = getBookById(bookId);
+
+        if (book.getUser() != null) {
+            throw new ServerException(ServerErrorCodeWithField.BOOK_TAKEN);
+        }
+
+        book.setUser(user);
+
+        bookDao.update(book);
+
+        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
     }
 
     @Override
-    public EmptyDtoResponse returnBook(long bookId) {
-        return null;
+    public BookDtoResponse returnBook(long bookId, User user) throws ServerException {
+        Book book = getBookById(bookId);
+
+        User owner = book.getUser();
+
+        if (!user.equals(owner)) {
+            throw new ServerException(ServerErrorCodeWithField.NO_PERMISSION);
+        }
+
+        book.setUser(null);
+
+        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+    }
+
+    @Override
+    public List<BookDtoResponse> getAllBooks() {
+        List<Book> books = bookDao.getAllBook();
+
+        return BookDtoMapper.INSTANCE.toBooks(books);
+    }
+
+    @Override
+    public BookDtoResponse getBook(long bookId) throws ServerException {
+        Book book = getBookById(bookId);
+
+        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+    }
+
+    @Override
+    public BookDtoResponse addAuthor(AddAuthorToBookDtoRequest request, long bookId) throws ServerException {
+
+        Book book = getBookById(bookId);
+
+        Long authorId = request.getAuthorId();
+
+        Author author = getAuthorById(authorId);
+
+        book.getAuthors().add(author);
+
+        bookDao.update(book);
+
+        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+    }
+
+    @Override
+    public BookDtoResponse deleteAuthor(DeleteAuthorFromBookDtoRequest request, long bookId) throws ServerException {
+        Book book = getBookById(bookId);
+
+        Long authorId = request.getDeleteAuthorId();
+
+        Author author = getAuthorById(authorId);
+
+        book.getAuthors().remove(author);
+
+        bookDao.update(book);
+
+        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
     }
 }

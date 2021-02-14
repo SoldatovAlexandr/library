@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,5 +19,13 @@ public class BookDtoResponse {
 
     private int yearOfPublishing;
 
-    private List<String> genres;
+    private List<GenreDtoResponse> genres;
+
+    private List<AuthorDtoResponse> authors;
+
+    private UserDtoResponse user;
+
+    public BookDtoResponse(long id, String name, int yearOfPublishing) {
+        this(id, name, yearOfPublishing, new ArrayList<>(), new ArrayList<>(), null);
+    }
 }

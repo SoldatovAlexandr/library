@@ -8,6 +8,8 @@ import edu.asoldatov.library.dto.response.AuthorDtoResponse;
 import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 
+import java.util.List;
+
 public interface AuthorService {
     AuthorDtoResponse createAuthor(CreateAuthorDtoRequest request);
 
@@ -16,4 +18,8 @@ public interface AuthorService {
     EmptyDtoResponse addBookToAuthor(long authorId, AddBookToAuthorDtoRequest request) throws ServerException;
 
     EmptyDtoResponse deleteBookFromAuthor(long authorId, DeleteBookFromAuthorDtoRequest request) throws ServerException;
+
+    List<AuthorDtoResponse> getAllAuthors();
+
+    AuthorDtoResponse getAuthor(long authorId) throws ServerException;
 }

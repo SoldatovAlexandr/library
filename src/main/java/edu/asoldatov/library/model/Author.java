@@ -27,11 +27,10 @@ public class Author {
     private String biography;
 
     @Column
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "authors_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
     private List<Book> books;
-
-    //private User user;
 
     public Author(String firstName, String lastName, String patronymic, int yearOfBirth, String biography) {
         this.firstName = firstName;

@@ -4,11 +4,12 @@ import edu.asoldatov.library.dao.BookDao;
 import edu.asoldatov.library.model.Book;
 import edu.asoldatov.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class BookDaoImpl implements BookDao {
     private final BookRepository bookRepository;
 
@@ -30,5 +31,10 @@ public class BookDaoImpl implements BookDao {
     @Override
     public void update(Book book) {
         bookRepository.save(book);
+    }
+
+    @Override
+    public List<Book> getAllBook() {
+        return bookRepository.findAll();
     }
 }

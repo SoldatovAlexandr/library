@@ -95,28 +95,6 @@ public class GlobalErrorHandler {
         return new ErrorDtoContainer(errorDtoItems);
     }
 
-    //TODO: migrate this method-> spring security
-/*
-    @ExceptionHandler(MissingRequestCookieException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ErrorDtoContainer cookieValidation(MissingRequestCookieException e) {
-        List<ErrorDtoItem> errorDtoItems = new ArrayList<>();
-
-        LOGGER.info("GlobalErrorHandler cookie validation MissingRequestCookieException");
-
-        ServerErrorCodeWithField serverErrorCodeWithField = ServerErrorCodeWithField.COOKIE_MISSING;
-
-        errorDtoItems.add(
-                new ErrorDtoItem(serverErrorCodeWithField.toString(),
-                        serverErrorCodeWithField.getField(),
-                        serverErrorCodeWithField.getMessage())
-        );
-
-        return new ErrorDtoContainer(errorDtoItems);
-    }
-*/
-
     @ExceptionHandler(ConversionFailedException.class)
     public ResponseEntity<String> handleConflict(RuntimeException ex) {
         LOGGER.info("GlobalErrorHandler handle conflict RuntimeException");

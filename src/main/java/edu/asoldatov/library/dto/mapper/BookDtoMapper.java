@@ -3,12 +3,12 @@ package edu.asoldatov.library.dto.mapper;
 import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.model.Book;
-import edu.asoldatov.library.model.Genre;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
@@ -22,7 +22,19 @@ public abstract class BookDtoMapper {
                 book.getId(),
                 book.getName(),
                 book.getYearOfPublishing(),
-                book.getGenres().stream().map(Genre::getName).collect(Collectors.toList())
+                GenreDtoMapper.INSTANCE.toGenreDtoResponses(book.getGenres()),
+                AuthorDtoMapper.INSTANCE.toAuthorDtoResponses(book.getAuthors()),
+                UserDtoMapper.INSTANCE.toUserDtoResponse(book.getUser())
         );
+    }
+
+    public List<BookDtoResponse> toBooks(List<Book> books) {
+        List<BookDtoResponse> responses = new ArrayList<>();
+
+        for (Book book : books) {
+            responses.add(toBookDtoResponse(book));
+        }
+
+        return responses;
     }
 }

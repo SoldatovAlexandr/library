@@ -5,9 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
-//TODO extends AbstractPersistable<Long>
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,15 +22,17 @@ public class Book {
     @Column
     private int yearOfPublishing;
 
-    @Column
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL})
-    private List<Genre> genres;
+    @ManyToOne
+    private User user;
 
     @Column
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.ALL})
-    private List<Author> authors;
+    private Set<Genre> genres;
+
+    @Column
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Author> authors;
 
     public Book(String name, int yearOfPublishing) {
         this.name = name;

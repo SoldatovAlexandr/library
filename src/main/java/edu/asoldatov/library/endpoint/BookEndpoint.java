@@ -3,7 +3,6 @@ package edu.asoldatov.library.endpoint;
 import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
 import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
-import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.BookService;
@@ -53,20 +52,24 @@ public class BookEndpoint {
         return bookService.getBookOwner(bookId);
     }
 
+    //TODO
+    /*
     //читатель
     //взять книгу на время
     @PostMapping(value = "/{bookId}/owners", produces = MediaType.APPLICATION_JSON_VALUE)
-    public EmptyDtoResponse takeBook(@PathVariable("bookId") long bookId) {
+    public BookDtoResponse takeBook(@PathVariable("bookId") long bookId) throws ServerException {
         LOGGER.info("BookEndpoint take the book");
-        return bookService.takeBook(bookId);
+        return bookService.takeBook(bookId, );
     }
 
 
     //читатель
     //вернуть книгу;
     @DeleteMapping(value = "/{bookId}/owners", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public EmptyDtoResponse returnBook(@PathVariable("bookId") long bookId) {
+    public BookDtoResponse returnBook(@PathVariable("bookId") long bookId) throws ServerException {
         LOGGER.info("BookEndpoint return book");
         return bookService.returnBook(bookId);
     }
+
+     */
 }

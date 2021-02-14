@@ -63,7 +63,4 @@ public class AuthorEndpoint {
         LOGGER.info("AuthorEndpoint delete book from the author");
         return authorService.deleteBookFromAuthor(authorId, request);
     }
-
-    //добавить читателя.
-    //TODO ???
 }
