@@ -1,33 +1,11 @@
 package edu.asoldatov.library.service;
 
-import edu.asoldatov.library.dao.*;
-import edu.asoldatov.library.dto.request.AddAuthorToBookDtoRequest;
-import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
-import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
-import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
-import edu.asoldatov.library.dto.response.BookDtoResponse;
-import edu.asoldatov.library.erroritem.exception.ServerException;
-import edu.asoldatov.library.model.Author;
-import edu.asoldatov.library.model.Book;
-import edu.asoldatov.library.model.Genre;
-import edu.asoldatov.library.model.User;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class TestBookService {
+    /*
     @MockBean
     private UserDao userDao;
 
@@ -256,4 +234,6 @@ public class TestBookService {
                 () -> Assertions.assertEquals(0, response.getAuthors().size())
         );
     }
+
+     */
 }

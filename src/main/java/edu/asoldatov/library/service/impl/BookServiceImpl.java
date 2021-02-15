@@ -1,6 +1,5 @@
-package edu.asoldatov.library.service;
+package edu.asoldatov.library.service.impl;
 
-import edu.asoldatov.library.dao.*;
 import edu.asoldatov.library.dto.mapper.BookDtoMapper;
 import edu.asoldatov.library.dto.request.AddAuthorToBookDtoRequest;
 import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
@@ -13,38 +12,47 @@ import edu.asoldatov.library.model.Author;
 import edu.asoldatov.library.model.Book;
 import edu.asoldatov.library.model.Genre;
 import edu.asoldatov.library.model.User;
+import edu.asoldatov.library.repository.AuthorRepository;
+import edu.asoldatov.library.repository.BookRepository;
+import edu.asoldatov.library.repository.GenreRepository;
+import edu.asoldatov.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Service
-public class BookServiceImpl extends ServiceBase implements BookService {
+public class BookServiceImpl implements BookService {
+
+    private final BookRepository bookRepository;
+
+    private final GenreRepository genreRepository;
+
+    private final AuthorRepository authorRepository;
+
+    private final static BookDtoMapper BOOK_DTO_MAPPER = BookDtoMapper.INSTANCE;
 
     @Autowired
-    public BookServiceImpl(BookDao bookDao, GenreDao genreDao, UserDao userDao, AuthorDao authorDao, RoleDao roleDao) {
-        super(bookDao, genreDao, userDao, authorDao, roleDao);
+    public BookServiceImpl(BookRepository bookRepository, GenreRepository genreRepository, AuthorRepository authorRepository) {
+        this.bookRepository = bookRepository;
+        this.genreRepository = genreRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
     public BookDtoResponse createBook(CreateBookDtoRequest request) throws ServerException {
-        Book book = BookDtoMapper.INSTANCE.toBook(request);
+        Book book = BOOK_DTO_MAPPER.toBook(request);
 
         long genreId = request.getGenreId();
 
         Genre genre = getGenreById(genreId);
 
-        Set<Genre> genres = new HashSet<>();
+        book.setGenres(Collections.singleton(genre));
 
-        genres.add(genre);
+        bookRepository.save(book);
 
-        book.setGenres(genres);
-
-        bookDao.insert(book);
-
-        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+        return BOOK_DTO_MAPPER.toBookDtoResponse(book);
     }
 
     @Override
@@ -71,9 +79,9 @@ public class BookServiceImpl extends ServiceBase implements BookService {
             book.getGenres().add(genre);
         }
 
-        bookDao.update(book);
+        bookRepository.save(book);
 
-        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+        return BOOK_DTO_MAPPER.toBookDtoResponse(book);
     }
 
 
@@ -87,9 +95,9 @@ public class BookServiceImpl extends ServiceBase implements BookService {
 
         book.setUser(user);
 
-        bookDao.update(book);
+        bookRepository.save(book);
 
-        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+        return BOOK_DTO_MAPPER.toBookDtoResponse(book);
     }
 
     @Override
@@ -104,23 +112,23 @@ public class BookServiceImpl extends ServiceBase implements BookService {
 
         book.setUser(null);
 
-        bookDao.update(book);
+        bookRepository.save(book);
 
-        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+        return BOOK_DTO_MAPPER.toBookDtoResponse(book);
     }
 
     @Override
     public List<BookDtoResponse> getAllBooks() {
-        List<Book> books = bookDao.getAllBook();
+        List<Book> books = bookRepository.findAll();
 
-        return BookDtoMapper.INSTANCE.toBooks(books);
+        return BOOK_DTO_MAPPER.toBooks(books);
     }
 
     @Override
     public BookDtoResponse getBook(long bookId) throws ServerException {
         Book book = getBookById(bookId);
 
-        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+        return BOOK_DTO_MAPPER.toBookDtoResponse(book);
     }
 
     @Override
@@ -134,10 +142,11 @@ public class BookServiceImpl extends ServiceBase implements BookService {
 
         book.getAuthors().add(author);
 
-        bookDao.update(book);
+        bookRepository.save(book);
 
-        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+        return BOOK_DTO_MAPPER.toBookDtoResponse(book);
     }
+
 
     @Override
     public BookDtoResponse deleteAuthor(DeleteAuthorFromBookDtoRequest request, long bookId) throws ServerException {
@@ -149,8 +158,20 @@ public class BookServiceImpl extends ServiceBase implements BookService {
 
         book.getAuthors().remove(author);
 
-        bookDao.update(book);
+        bookRepository.save(book);
 
-        return BookDtoMapper.INSTANCE.toBookDtoResponse(book);
+        return BOOK_DTO_MAPPER.toBookDtoResponse(book);
+    }
+
+    private Genre getGenreById(long genreId) throws ServerException {
+        return genreRepository.findById(genreId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_GENRE_ID));
+    }
+
+    private Book getBookById(long bookId) throws ServerException {
+        return bookRepository.findById(bookId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_BOOK_ID));
+    }
+
+    private Author getAuthorById(Long authorId) throws ServerException {
+        return authorRepository.findById(authorId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_AUTHOR_ID));
     }
 }

@@ -76,7 +76,7 @@
 
                 <h4>
                     <form:form method="POST" modelAttribute="addAuthor"
-                               action="http://localhost:8080/books/${book.id}/authors">
+                               action="/books/${book.id}/authors">
                         <div>
                             <form:input type="number" path="authorId" placeholder="id автора" autofocus="true"/>
                             <form:errors path="authorId"/>

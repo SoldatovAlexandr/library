@@ -33,9 +33,4 @@ public class Book {
     @Column
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Author> authors;
-
-    public Book(String name, int yearOfPublishing) {
-        this.name = name;
-        this.yearOfPublishing = yearOfPublishing;
-    }
 }

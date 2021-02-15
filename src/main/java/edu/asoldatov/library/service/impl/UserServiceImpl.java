@@ -1,6 +1,5 @@
-package edu.asoldatov.library.service;
+package edu.asoldatov.library.service.impl;
 
-import edu.asoldatov.library.dao.*;
 import edu.asoldatov.library.dto.mapper.UserDtoMapper;
 import edu.asoldatov.library.dto.request.AddAdminDtoRequest;
 import edu.asoldatov.library.dto.request.RegisterUserDtoRequest;
@@ -9,6 +8,9 @@ import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.Role;
 import edu.asoldatov.library.model.User;
+import edu.asoldatov.library.repository.RoleRepository;
+import edu.asoldatov.library.repository.UserRepository;
+import edu.asoldatov.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,45 +24,47 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserServiceImpl extends ServiceBase implements UserService {
+public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
+
+    private final static UserDtoMapper USER_DTO_MAPPER = UserDtoMapper.INSTANCE;
+
+    private final static String USER_NOT_FOUND = "User not found";
 
     private final static String USER = "ROLE_USER";
 
     private final static String ADMIN = "ROLE_ADMIN";
 
     @Autowired
-    protected UserServiceImpl(
-            BookDao bookDao,
-            GenreDao genreDao,
-            UserDao userDao,
-            AuthorDao authorDao,
-            RoleDao roleDao,
-            BCryptPasswordEncoder bCryptPasswordEncoder
-    ) {
-        super(bookDao, genreDao, userDao, authorDao, roleDao);
+    public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder,
+                           UserRepository userRepository,
+                           RoleRepository roleRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return getUserByName(username);
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
     }
 
 
     @Override
     public List<UserDtoResponse> allUsers(Model model) {
-        Iterable<User> users = userDao.getAllUsers();
+        Iterable<User> users = userRepository.findAll();
 
-        return UserDtoMapper.INSTANCE.toUserDtoResponses(users);
+        return USER_DTO_MAPPER.toUserDtoResponses(users);
     }
 
 
     @Override
     public UserDtoResponse registerUser(RegisterUserDtoRequest request,
                                         BindingResult bindingResult, Model model) throws ServerException {
-
         String username = request.getUsername();
 
         if (hasUsername(username)) {
@@ -71,28 +75,28 @@ public class UserServiceImpl extends ServiceBase implements UserService {
             throw new ServerException(ServerErrorCodeWithField.PASSWORDS_NOT_EQUALS);
         }
 
-        User user = UserDtoMapper.INSTANCE.toUser(request);
+        User user = USER_DTO_MAPPER.toUser(request);
 
         setRoles(user);
 
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
 
-        userDao.insert(user);
+        userRepository.save(user);
 
-        return UserDtoMapper.INSTANCE.toUserDtoResponse(user);
+        return USER_DTO_MAPPER.toUserDtoResponse(user);
     }
 
     @Override
     public void addAdminRole(AddAdminDtoRequest request) throws ServerException {
         long userId = request.getUserId();
 
-        User user = getUserById(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_USER_ID));
 
         Role role = getRoleByName(ADMIN);
 
         user.getRoles().add(role);
 
-        userDao.update(user);
+        userRepository.save(user);
     }
 
 
@@ -106,7 +110,16 @@ public class UserServiceImpl extends ServiceBase implements UserService {
         user.setRoles(userRoles);
     }
 
+    private Role getRoleByName(String roleName) throws ServerException {
+        return roleRepository.findByName(roleName).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.EMPTY_DATABASE));
+    }
+
     private boolean equalsPassword(RegisterUserDtoRequest request) {
         return request.getPassword().equals(request.getPasswordConfirm());
     }
+
+    protected boolean hasUsername(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
 }

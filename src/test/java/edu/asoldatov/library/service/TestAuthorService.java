@@ -1,32 +1,11 @@
 package edu.asoldatov.library.service;
 
-import edu.asoldatov.library.dao.*;
-import edu.asoldatov.library.dto.request.AddBookToAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.CreateAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.DeleteBookFromAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.UpdateAuthorDtoRequest;
-import edu.asoldatov.library.dto.response.AuthorDtoResponse;
-import edu.asoldatov.library.erroritem.exception.ServerException;
-import edu.asoldatov.library.model.Author;
-import edu.asoldatov.library.model.Book;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class TestAuthorService {
-
+/*
     @MockBean
     private UserDao userDao;
 
@@ -161,4 +140,6 @@ public class TestAuthorService {
                 () -> verify(authorDao).update(any())
         );
     }
+
+ */
 }

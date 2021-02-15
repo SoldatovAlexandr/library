@@ -31,12 +31,4 @@ public class Author {
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "authors_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
     private List<Book> books;
-
-    public Author(String firstName, String lastName, String patronymic, int yearOfBirth, String biography) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.patronymic = patronymic;
-        this.yearOfBirth = yearOfBirth;
-        this.biography = biography;
-    }
 }
