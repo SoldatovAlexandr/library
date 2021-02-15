@@ -32,7 +32,11 @@
     </tr>
     <c:forEach items="${genres}" var="genre">
         <tr>
-            <td onclick="window.location='http://localhost:8080/genres/${genre.id}'">${genre.id}</td>
+            <td>
+                <a href="/genres/${genre.id}">
+                        ${genre.id}
+                </a>
+            </td>
             <td>
                     ${genre.name}
             </td>

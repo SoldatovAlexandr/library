@@ -56,7 +56,11 @@
     </tr>
     <c:forEach items="${authors}" var="author">
         <tr>
-            <td onclick="window.location='http://localhost:8080/authors/${author.id}'">${author.id}</td>
+            <td>
+                <a href="/authors/${author.id}">
+                        ${author.id}
+                </a>
+            </td>
             <td>
                     ${author.firstName}
             </td>

@@ -32,7 +32,7 @@
             </h3>
             <c:forEach items="${book.genres}" var="genres">
                 <p>
-                    <a href="http://localhost:8080/genres/${genres.id}"> ${genres.name}</a>
+                    <a href="/genres/${genres.id}"> ${genres.name}</a>
                 </p>
             </c:forEach>
         </div>
@@ -42,7 +42,7 @@
                 Авторы:
             </h3>
             <c:forEach items="${book.authors}" var="authors">
-                <a href="http://localhost:8080/authors/${authors.id}"> ${authors.lastName} ${authors.firstName} ${authors.patronymic}</a>
+                <a href="/authors/${authors.id}"> ${authors.lastName} ${authors.firstName} ${authors.patronymic}</a>
                 </p>
             </c:forEach>
         </div>
@@ -89,7 +89,7 @@
 
                 <h4>
                     <form:form method="DELETE" modelAttribute="deleteAuthor"
-                               action="http://localhost:8080/books/${book.id}/authors/delete">
+                               action="/books/${book.id}/authors/delete">
                         <div>
                             <form:input type="number" path="deleteAuthorId" placeholder="id автора" autofocus="true"/>
                             <form:errors path="deleteAuthorId"/>
@@ -106,7 +106,7 @@
                 <c:when test="${book.user==null}">
                     <h3> Книга свободна!</h3>
                     <br/>
-                    <form:form method="POST" action="http://localhost:8080/books/${book.id}/take">
+                    <form:form method="POST" action="/books/${book.id}/take">
                         <button type="submit">Забронировать книгу!</button>
                     </form:form>
                 </c:when>
@@ -115,7 +115,7 @@
                     <br/>
                     <sec:authentication var="principal" property="principal.username"/>
                     <c:if test="${principal==book.user.username}">
-                        <form:form method="POST" action="http://localhost:8080/books/${book.id}/return">
+                        <form:form method="POST" action="/books/${book.id}/return">
                             <button type="submit">Вернуть книгу!</button>
                         </form:form>
                     </c:if>

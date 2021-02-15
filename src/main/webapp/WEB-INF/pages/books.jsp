@@ -37,7 +37,6 @@
 
 <table border="1" cellpadding="5" class="table">
     <tr>
-        <th>Actions</th>
         <th>BookName</th>
         <th>Genres</th>
         <th>Authors</th>
@@ -45,22 +44,28 @@
     </tr>
     <c:forEach items="${books}" var="book">
         <tr>
-            <td onclick="window.location='http://localhost:8080/books/${book.id}'">${book.name}</td>
             <td>
-                    ${book.name}
+                <a href="/books/${book.id}">
+                        ${book.name}
+                </a>
+
             </td>
             <td>
                 <c:forEach items="${book.genres}" var="genres">
-                    <p onclick="window.location='http://localhost:8080/genres/${genres.id}/'">
-                            ${genres.name}
+                    <p>
+                        <a href="/genres/${genres.id}/">
+                                ${genres.name}
+                        </a>
                     </p>
                 </c:forEach>
             </td>
 
             <td>
                 <c:forEach items="${book.authors}" var="authors">
-                    <p onclick="window.location='http://localhost:8080/authors/${authors.id}/'">
-                            ${authors.lastName} ${authors.firstName} ${authors.patronymic}
+                    <p>
+                        <a href="authors/${authors.id}/">
+                                ${authors.lastName} ${authors.firstName} ${authors.patronymic}
+                        </a>
                     </p>
                 </c:forEach>
             </td>
@@ -71,6 +76,5 @@
         </tr>
     </c:forEach>
 </table>
-
 </body>
 </html>

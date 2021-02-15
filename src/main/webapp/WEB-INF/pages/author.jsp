@@ -64,10 +64,8 @@
     Список книг автора:
 
     <c:forEach items="${author.books}" var="book">
-<p onclick="window.location='http://localhost:8080/books/${book.id}/'">
-        ${book.name}
-</p>
-</c:forEach>
+        <a href="/books/${book.id}/"> ${book.name}</a>
+    </c:forEach>
 </p>
 </body>
 </html>
