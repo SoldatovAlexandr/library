@@ -1,40 +1,64 @@
 package edu.asoldatov.library.service;
 
+import edu.asoldatov.library.dto.request.AddAuthorToBookDtoRequest;
+import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
+import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
+import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
+import edu.asoldatov.library.dto.response.BookDtoResponse;
+import edu.asoldatov.library.erroritem.exception.ServerException;
+import edu.asoldatov.library.model.Author;
+import edu.asoldatov.library.model.Book;
+import edu.asoldatov.library.model.Genre;
+import edu.asoldatov.library.model.User;
+import edu.asoldatov.library.repository.AuthorRepository;
+import edu.asoldatov.library.repository.BookRepository;
+import edu.asoldatov.library.repository.GenreRepository;
+import edu.asoldatov.library.repository.UserRepository;
+import edu.asoldatov.library.service.impl.BookServiceImpl;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class TestBookService {
-    /*
-    @MockBean
-    private UserDao userDao;
 
     @MockBean
-    private BookDao bookDao;
+    private BookRepository bookRepository;
 
     @MockBean
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
 
     @MockBean
-    private GenreDao genreDao;
+    private GenreRepository genreRepository;
 
     @MockBean
-    private RoleDao roleDao;
+    private UserRepository userRepository;
 
     @Test
     public void testCreateBook() throws ServerException {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         Genre genre = new Genre(1L, "genre");
 
-        when(genreDao.getById(1L)).thenReturn(Optional.of(genre));
+        when(genreRepository.findById(1L)).thenReturn(Optional.of(genre));
 
         CreateBookDtoRequest request = new CreateBookDtoRequest("name", 2000, 1L);
 
         BookDtoResponse response = bookService.createBook(request);
 
         Assertions.assertAll(
-                () -> verify(bookDao).insert(any()),
+                () -> verify(bookRepository).save(any()),
                 () -> Assertions.assertEquals("name", response.getName()),
                 () -> Assertions.assertNull(response.getUser())
         );
@@ -42,22 +66,22 @@ public class TestBookService {
 
     @Test
     public void testUpdateBook() throws ServerException {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         Genre genre = new Genre(1L, "genre");
 
         Book book = new Book(10L, "name", 2000, null, new HashSet<>(), new HashSet<>());
 
-        when(genreDao.getById(1L)).thenReturn(Optional.of(genre));
+        when(genreRepository.findById(1L)).thenReturn(Optional.of(genre));
 
-        when(bookDao.getById(10L)).thenReturn(Optional.of(book));
+        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
         UpdateBookDtoRequest request = new UpdateBookDtoRequest("new name", 1999, 1L);
 
         BookDtoResponse response = bookService.updateBook(request, 10L);
 
         Assertions.assertAll(
-                () -> verify(bookDao).update(any()),
+                () -> verify(bookRepository).save(any()),
                 () -> Assertions.assertEquals("new name", response.getName()),
                 () -> Assertions.assertNull(response.getUser()),
                 () -> Assertions.assertEquals(1999, response.getYearOfPublishing()),
@@ -67,7 +91,7 @@ public class TestBookService {
 
     @Test
     public void testGetAllBooks() {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         List<Book> books = new ArrayList<>();
 
@@ -75,37 +99,37 @@ public class TestBookService {
 
         books.add(new Book(11L, "name2", 2000, null, new HashSet<>(), new HashSet<>()));
 
-        when(bookDao.getAllBook()).thenReturn(books);
+        when(bookRepository.findAll()).thenReturn(books);
 
         List<BookDtoResponse> responses = bookService.getAllBooks();
 
         Assertions.assertAll(
-                () -> verify(bookDao).getAllBook(),
+                () -> verify(bookRepository).findAll(),
                 () -> Assertions.assertEquals(2, responses.size())
         );
     }
 
     @Test
     public void testGetBook() throws ServerException {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         Book book = new Book(10L, "name", 2000, null, new HashSet<>(), new HashSet<>());
 
-        when(bookDao.getById(10L)).thenReturn(Optional.of(book));
+        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
         BookDtoResponse expectedResponse = new BookDtoResponse(10L, "name", 2000, new ArrayList<>(), new ArrayList<>(), null);
 
         BookDtoResponse response = bookService.getBook(10L);
 
         Assertions.assertAll(
-                () -> verify(bookDao).getById(10L),
+                () -> verify(bookRepository).findById(10L),
                 () -> Assertions.assertEquals(expectedResponse, response)
         );
     }
 
     @Test
     public void testTakeBook() throws ServerException {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         Book book = new Book(10L, "name", 2000, null, new HashSet<>(), new HashSet<>());
 
@@ -113,21 +137,21 @@ public class TestBookService {
 
         user.setId(1L);
 
-        when(bookDao.getById(10L)).thenReturn(Optional.of(book));
+        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
-        when(userDao.getById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         BookDtoResponse bookDtoResponse = bookService.takeBook(10L, user);
 
         Assertions.assertAll(
-                () -> verify(bookDao).update(any()),
+                () -> verify(bookRepository).save(any()),
                 () -> Assertions.assertNotNull(bookDtoResponse.getUser())
         );
     }
 
     @Test
     public void testTakeBookFail() {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         User user = new User("username", "firstname", "lastname", "patronymic", 2000);
 
@@ -135,9 +159,9 @@ public class TestBookService {
 
         user.setId(1L);
 
-        when(bookDao.getById(10L)).thenReturn(Optional.of(book));
+        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
-        when(userDao.getById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         Assertions.assertThrows(
                 ServerException.class, () -> bookService.takeBook(10L, user)
@@ -146,7 +170,7 @@ public class TestBookService {
 
     @Test
     public void testReturnBook() throws ServerException {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         User user = new User("username", "firstname", "lastname", "patronymic", 2000);
 
@@ -154,21 +178,21 @@ public class TestBookService {
 
         user.setId(1L);
 
-        when(bookDao.getById(10L)).thenReturn(Optional.of(book));
+        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
-        when(userDao.getById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         BookDtoResponse bookDtoResponse = bookService.returnBook(10L, user);
 
         Assertions.assertAll(
-                () -> verify(bookDao).update(any()),
+                () -> verify(bookRepository).save(any()),
                 () -> Assertions.assertNull(bookDtoResponse.getUser())
         );
     }
 
     @Test
     public void testReturnBookFail() {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         User owner = new User("username", "firstname", "lastname", "patronymic", 2000);
 
@@ -180,9 +204,9 @@ public class TestBookService {
 
         owner.setId(2L);
 
-        when(bookDao.getById(10L)).thenReturn(Optional.of(book));
+        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
-        when(userDao.getById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         Assertions.assertThrows(
                 ServerException.class, () -> bookService.returnBook(10L, user)
@@ -191,29 +215,29 @@ public class TestBookService {
 
     @Test
     public void testAddAuthor() throws ServerException {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         Author author = new Author(1L, "Иван", "Иванов", "Иванович", 1980, "Биография", new ArrayList<>());
 
         Book book = new Book(10L, "name", 2000, null, new HashSet<>(), new HashSet<>());
 
-        when(bookDao.getById(10L)).thenReturn(Optional.of(book));
+        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
-        when(authorDao.getById(1L)).thenReturn(Optional.of(author));
+        when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
 
         AddAuthorToBookDtoRequest request = new AddAuthorToBookDtoRequest(1L);
 
         BookDtoResponse response = bookService.addAuthor(request, 10L);
 
         Assertions.assertAll(
-                () -> verify(bookDao).update(any()),
+                () -> verify(bookRepository).save(any()),
                 () -> Assertions.assertEquals(1, response.getAuthors().size())
         );
     }
 
     @Test
     public void testDeleteAuthor() throws ServerException {
-        BookService bookService = new BookServiceImpl(bookDao, genreDao, userDao, authorDao, roleDao);
+        BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
         Author author = new Author(1L, "Иван", "Иванов", "Иванович", 1980, "Биография", new ArrayList<>());
 
@@ -221,19 +245,17 @@ public class TestBookService {
 
         book.getAuthors().add(author);
 
-        when(bookDao.getById(10L)).thenReturn(Optional.of(book));
+        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
-        when(authorDao.getById(1L)).thenReturn(Optional.of(author));
+        when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
 
-        DeleteAuthorFromBookDtoRequest request= new DeleteAuthorFromBookDtoRequest(1L);
+        DeleteAuthorFromBookDtoRequest request = new DeleteAuthorFromBookDtoRequest(1L);
 
         BookDtoResponse response = bookService.deleteAuthor(request, 10L);
 
         Assertions.assertAll(
-                () -> verify(bookDao).update(any()),
+                () -> verify(bookRepository).save(any()),
                 () -> Assertions.assertEquals(0, response.getAuthors().size())
         );
     }
-
-     */
 }
