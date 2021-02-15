@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateAuthorDtoRequest {
+public class AuthorDtoRequest {
     @NotNull(message = "FIRST_NAME_NOT_SET")
     private String firstName;
 

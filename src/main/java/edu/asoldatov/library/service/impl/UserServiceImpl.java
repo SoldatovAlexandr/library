@@ -1,8 +1,8 @@
 package edu.asoldatov.library.service.impl;
 
 import edu.asoldatov.library.dto.mapper.UserDtoMapper;
-import edu.asoldatov.library.dto.request.AddAdminDtoRequest;
-import edu.asoldatov.library.dto.request.RegisterUserDtoRequest;
+import edu.asoldatov.library.dto.request.IdDto;
+import edu.asoldatov.library.dto.request.UserDtoRequest;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
 import edu.asoldatov.library.erroritem.exception.ServerException;
@@ -63,23 +63,23 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDtoResponse registerUser(RegisterUserDtoRequest request,
+    public UserDtoResponse registerUser(UserDtoRequest userDtoRequest,
                                         BindingResult bindingResult, Model model) throws ServerException {
-        String username = request.getUsername();
+        String username = userDtoRequest.getUsername();
 
         if (hasUsername(username)) {
             throw new ServerException(ServerErrorCodeWithField.WRONG_USERNAME);
         }
 
-        if (!equalsPassword(request)) {
+        if (!equalsPassword(userDtoRequest)) {
             throw new ServerException(ServerErrorCodeWithField.PASSWORDS_NOT_EQUALS);
         }
 
-        User user = USER_DTO_MAPPER.toUser(request);
+        User user = USER_DTO_MAPPER.toUser(userDtoRequest);
 
         setRoles(user);
 
-        user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(userDtoRequest.getPassword()));
 
         userRepository.save(user);
 
@@ -87,8 +87,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addAdminRole(AddAdminDtoRequest request) throws ServerException {
-        long userId = request.getUserId();
+    public void addAdminRole(IdDto idDto) throws ServerException {
+        long userId = idDto.getId();
 
         User user = userRepository.findById(userId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_USER_ID));
 
@@ -114,8 +114,10 @@ public class UserServiceImpl implements UserService {
         return roleRepository.findByName(roleName).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.EMPTY_DATABASE));
     }
 
-    private boolean equalsPassword(RegisterUserDtoRequest request) {
-        return request.getPassword().equals(request.getPasswordConfirm());
+
+    //TODO
+    private boolean equalsPassword(UserDtoRequest userDtoRequest) {
+        return userDtoRequest.getPassword().equals(userDtoRequest.getPasswordConfirm());
     }
 
     protected boolean hasUsername(String username) {

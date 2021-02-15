@@ -43,8 +43,8 @@
     Добавить нового редактора:
     <form:form method="POST" modelAttribute="addAdmin">
 <div>
-    <form:input type="number" path="userId" placeholder="User id" autofocus="true"/>
-    <form:errors path="userId"/>
+    <form:input type="number" path="id" placeholder="User id" autofocus="true"/>
+    <form:errors path="id"/>
 </div>
 
 <button type="submit">Добавить</button>

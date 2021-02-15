@@ -1,6 +1,6 @@
 package edu.asoldatov.library.dto.mapper;
 
-import edu.asoldatov.library.dto.request.RegisterUserDtoRequest;
+import edu.asoldatov.library.dto.request.UserDtoRequest;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.model.User;
 import org.mapstruct.Mapper;
@@ -16,13 +16,13 @@ public abstract class UserDtoMapper {
     public static final UserDtoMapper INSTANCE = Mappers.getMapper(UserDtoMapper.class);
 
 
-    public User toUser(RegisterUserDtoRequest request) {
+    public User toUser(UserDtoRequest userDtoRequest) {
         return new User(
-                request.getUsername(),
-                request.getFirstName(),
-                request.getLastName(),
-                request.getPatronymic(),
-                request.getYearOfBirth()
+                userDtoRequest.getUsername(),
+                userDtoRequest.getFirstName(),
+                userDtoRequest.getLastName(),
+                userDtoRequest.getPatronymic(),
+                userDtoRequest.getYearOfBirth()
         );
     }
 

@@ -1,9 +1,8 @@
 package edu.asoldatov.library.controllers;
 
 import edu.asoldatov.library.dto.request.AddAuthorToBookDtoRequest;
-import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
+import edu.asoldatov.library.dto.request.BookDtoRequest;
 import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
-import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.User;
@@ -41,17 +40,17 @@ public class BookController {
 
         model.addAttribute("books", books);
 
-        model.addAttribute("book", new CreateBookDtoRequest());
+        model.addAttribute("book", new BookDtoRequest());
 
         return "books";
     }
 
     @PostMapping(path = "/books")
-    public String addBook(@ModelAttribute(name = "book") @Valid CreateBookDtoRequest request,
+    public String addBook(@ModelAttribute(name = "book") @Valid BookDtoRequest bookDtoRequest,
                           Model model) throws ServerException {
         LOGGER.info("BookController add book");
 
-        bookService.createBook(request);
+        bookService.createBook(bookDtoRequest);
 
         List<BookDtoResponse> books = bookService.getAllBooks();
 
@@ -72,7 +71,7 @@ public class BookController {
 
         model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
 
-        model.addAttribute("updateBook", new UpdateBookDtoRequest());
+        model.addAttribute("updateBook", new BookDtoRequest());
 
         return "book";
     }
@@ -80,10 +79,10 @@ public class BookController {
     @PostMapping(path = "/books/{bookId}")
     public String updateBook(Model model,
                              @PathVariable("bookId") long bookId,
-                             @Valid UpdateBookDtoRequest request) throws ServerException {
+                             BookDtoRequest bookDtoRequest) throws ServerException {
         LOGGER.info("BookController update book");
 
-        BookDtoResponse book = bookService.updateBook(request, bookId);
+        BookDtoResponse book = bookService.updateBook(bookDtoRequest, bookId);
 
         model.addAttribute("book", book);
 
@@ -91,7 +90,7 @@ public class BookController {
 
         model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
 
-        model.addAttribute("updateBook", new UpdateBookDtoRequest());
+        model.addAttribute("updateBook", new BookDtoRequest());
 
         return "book";
     }
@@ -110,7 +109,7 @@ public class BookController {
 
         model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
 
-        model.addAttribute("updateBook", new UpdateBookDtoRequest());
+        model.addAttribute("updateBook", new BookDtoRequest());
 
         return "book";
     }
@@ -129,7 +128,7 @@ public class BookController {
 
         model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
 
-        model.addAttribute("updateBook", new UpdateBookDtoRequest());
+        model.addAttribute("updateBook", new BookDtoRequest());
 
         return "book";
     }
@@ -148,7 +147,7 @@ public class BookController {
 
         model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
 
-        model.addAttribute("updateBook", new UpdateBookDtoRequest());
+        model.addAttribute("updateBook", new BookDtoRequest());
 
         return "book";
     }
@@ -168,7 +167,7 @@ public class BookController {
 
         model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
 
-        model.addAttribute("updateBook", new UpdateBookDtoRequest());
+        model.addAttribute("updateBook", new BookDtoRequest());
 
         return "book";
     }

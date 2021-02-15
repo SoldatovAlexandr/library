@@ -1,6 +1,6 @@
 package edu.asoldatov.library.controllers;
 
-import edu.asoldatov.library.dto.request.AddAdminDtoRequest;
+import edu.asoldatov.library.dto.request.IdDto;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.UserService;
@@ -31,7 +31,7 @@ public class AdminController {
 
         List<UserDtoResponse> users = userService.allUsers(model);
 
-        model.addAttribute("addAdmin", new AddAdminDtoRequest());
+        model.addAttribute("addAdmin", new IdDto());
 
         model.addAttribute("users", users);
 
@@ -39,14 +39,14 @@ public class AdminController {
     }
 
     @PostMapping("/admin")
-    public String addAdminRole(Model model, @ModelAttribute("addUser") AddAdminDtoRequest request) throws ServerException {
+    public String addAdminRole(Model model, @ModelAttribute("addUser") IdDto idDto) throws ServerException {
         LOGGER.info("AdminController add new admin");
 
-        userService.addAdminRole(request);
+        userService.addAdminRole(idDto);
 
         List<UserDtoResponse> users = userService.allUsers(model);
 
-        model.addAttribute("addAdmin", new AddAdminDtoRequest());
+        model.addAttribute("addAdmin", new IdDto());
 
         model.addAttribute("users", users);
 

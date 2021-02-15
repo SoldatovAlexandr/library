@@ -1,6 +1,6 @@
 package edu.asoldatov.library.endpoint;
 
-import edu.asoldatov.library.dto.request.CreateGenreDtoRequest;
+import edu.asoldatov.library.dto.request.GenreDtoRequest;
 import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.dto.response.GenreDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
@@ -29,9 +29,9 @@ public class GenreEndpoint {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public GenreDtoResponse createGenre(@Valid @RequestBody CreateGenreDtoRequest request) {
+    public GenreDtoResponse createGenre(@Valid @RequestBody GenreDtoRequest genreDtoRequest) {
         LOGGER.info("GenreEndpoint create genre");
-        return genreService.createGenre(request);
+        return genreService.createGenre(genreDtoRequest);
     }
 
     @GetMapping(value = "/{genreId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,9 +49,9 @@ public class GenreEndpoint {
     @PutMapping(value = "/{genreId}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public GenreDtoResponse updateGenre(@PathVariable("genreId") long genreId,
-                                        @Valid @RequestBody CreateGenreDtoRequest request) throws ServerException {
+                                        @Valid @RequestBody GenreDtoRequest genreDtoRequest) throws ServerException {
         LOGGER.info("GenreEndpoint update genre");
-        return genreService.updateGenre(request, genreId);
+        return genreService.updateGenre(genreDtoRequest, genreId);
     }
 
     @DeleteMapping(value = "/{genreId}", consumes = MediaType.APPLICATION_JSON_VALUE)

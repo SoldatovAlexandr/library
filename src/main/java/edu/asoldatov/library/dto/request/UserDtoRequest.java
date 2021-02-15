@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterUserDtoRequest {
+public class UserDtoRequest {
     @Size(min = 2, message = "Не меньше 5 знаков")
     private String username;
 

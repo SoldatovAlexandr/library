@@ -1,6 +1,6 @@
 package edu.asoldatov.library.dto.mapper;
 
-import edu.asoldatov.library.dto.request.CreateAuthorDtoRequest;
+import edu.asoldatov.library.dto.request.AuthorDtoRequest;
 import edu.asoldatov.library.dto.response.AuthorDtoResponse;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.model.Author;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public abstract class AuthorDtoMapper {
     public static final AuthorDtoMapper INSTANCE = Mappers.getMapper(AuthorDtoMapper.class);
 
-    public abstract Author toAuthor(CreateAuthorDtoRequest request);
+    public abstract Author toAuthor(AuthorDtoRequest authorDtoRequest);
 
     public abstract List<AuthorDtoResponse> toAuthorDtoResponses(Set<Author> authors);
 

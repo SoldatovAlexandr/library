@@ -2,9 +2,8 @@ package edu.asoldatov.library.service.impl;
 
 import edu.asoldatov.library.dto.mapper.BookDtoMapper;
 import edu.asoldatov.library.dto.request.AddAuthorToBookDtoRequest;
-import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
+import edu.asoldatov.library.dto.request.BookDtoRequest;
 import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
-import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
 import edu.asoldatov.library.erroritem.exception.ServerException;
@@ -41,10 +40,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDtoResponse createBook(CreateBookDtoRequest request) throws ServerException {
-        Book book = BOOK_DTO_MAPPER.toBook(request);
+    public BookDtoResponse createBook(BookDtoRequest bookDtoRequest) throws ServerException {
+        Book book = BOOK_DTO_MAPPER.toBook(bookDtoRequest);
 
-        long genreId = request.getGenreId();
+        long genreId = bookDtoRequest.getGenreId();
 
         Genre genre = getGenreById(genreId);
 
@@ -56,22 +55,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDtoResponse updateBook(UpdateBookDtoRequest request, long bookId) throws ServerException {
+    public BookDtoResponse updateBook(BookDtoRequest bookDtoRequest, long bookId) throws ServerException {
         Book book = getBookById(bookId);
 
-        String name = request.getName();
+        String name = bookDtoRequest.getName();
 
         if (name != null) {
             book.setName(name);
         }
 
-        Integer yearOfPublishing = request.getYearOfPublishing();
+        Integer yearOfPublishing = bookDtoRequest.getYearOfPublishing();
 
         if (yearOfPublishing != null) {
             book.setYearOfPublishing(yearOfPublishing);
         }
 
-        Long genreId = request.getGenreId();
+        Long genreId = bookDtoRequest.getGenreId();
 
         if (genreId != null) {
             Genre genre = getGenreById(genreId);

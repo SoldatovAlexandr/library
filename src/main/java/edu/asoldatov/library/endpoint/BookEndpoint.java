@@ -1,7 +1,6 @@
 package edu.asoldatov.library.endpoint;
 
-import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
-import edu.asoldatov.library.dto.request.UpdateBookDtoRequest;
+import edu.asoldatov.library.dto.request.BookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.BookService;
@@ -29,18 +28,18 @@ public class BookEndpoint {
     //редактор
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BookDtoResponse createBook(@Valid @RequestBody CreateBookDtoRequest request) throws ServerException {
+    public BookDtoResponse createBook(@Valid @RequestBody BookDtoRequest bookDtoRequest) throws ServerException {
         LOGGER.info("BookEndpoint create book");
-        return bookService.createBook(request);
+        return bookService.createBook(bookDtoRequest);
     }
 
     //редактор
     @PutMapping(value = "/{bookId}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BookDtoResponse updateBook(@Valid @RequestBody UpdateBookDtoRequest request,
+    public BookDtoResponse updateBook(@RequestBody BookDtoRequest bookDtoRequest,
                                       @PathVariable("bookId") long bookId) throws ServerException {
         LOGGER.info("BookEndpoint update book");
-        return bookService.updateBook(request, bookId);
+        return bookService.updateBook(bookDtoRequest, bookId);
     }
 
     //TODO

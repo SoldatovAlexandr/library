@@ -1,6 +1,6 @@
 package edu.asoldatov.library.dto.mapper;
 
-import edu.asoldatov.library.dto.request.CreateBookDtoRequest;
+import edu.asoldatov.library.dto.request.BookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.model.Book;
 import org.mapstruct.Mapper;
@@ -15,7 +15,7 @@ import java.util.List;
 public abstract class BookDtoMapper {
     public static final BookDtoMapper INSTANCE = Mappers.getMapper(BookDtoMapper.class);
 
-    public abstract Book toBook(CreateBookDtoRequest request);
+    public abstract Book toBook(BookDtoRequest bookDtoRequest);
 
     public BookDtoResponse toBookDtoResponse(Book book) {
         return new BookDtoResponse(

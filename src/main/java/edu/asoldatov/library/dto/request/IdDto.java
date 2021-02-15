@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateGenreDtoRequest {
-    @NotNull(message = "NAME_NOT_SET")
-    private String name;
+public class IdDto {
+    @NotNull(message = "ID_NOT_SET")
+    private Long id;
 }

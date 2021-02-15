@@ -1,6 +1,7 @@
 package edu.asoldatov.library.erroritem.code;
 
 public enum ServerErrorCode {
+    ID_NOT_SET("id must be set"),
     USER_ID_NOT_SET("userId must be set"),
     AUTHOR_ID_NOT_SET("authorId must be set"),
     BOOK_ID_NOT_SET("bookId must be set"),

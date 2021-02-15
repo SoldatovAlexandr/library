@@ -1,6 +1,6 @@
 package edu.asoldatov.library.dto.mapper;
 
-import edu.asoldatov.library.dto.request.CreateGenreDtoRequest;
+import edu.asoldatov.library.dto.request.GenreDtoRequest;
 import edu.asoldatov.library.dto.response.GenreDtoResponse;
 import edu.asoldatov.library.model.Genre;
 import org.mapstruct.Mapper;
@@ -17,7 +17,7 @@ public abstract class GenreDtoMapper {
 
     public abstract GenreDtoResponse toGenreDtoResponse(Genre genre);
 
-    public abstract Genre toGenre(CreateGenreDtoRequest request);
+    public abstract Genre toGenre(GenreDtoRequest genreDtoRequest);
 
     public List<GenreDtoResponse> toGenreDtoResponses(Iterable<Genre> genres) {
         List<GenreDtoResponse> responses = new ArrayList<>();

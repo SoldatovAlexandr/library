@@ -1,9 +1,8 @@
 package edu.asoldatov.library.endpoint;
 
 import edu.asoldatov.library.dto.request.AddBookToAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.CreateAuthorDtoRequest;
+import edu.asoldatov.library.dto.request.AuthorDtoRequest;
 import edu.asoldatov.library.dto.request.DeleteBookFromAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.UpdateAuthorDtoRequest;
 import edu.asoldatov.library.dto.response.AuthorDtoResponse;
 import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
@@ -31,17 +30,17 @@ public class AuthorEndpoint {
     //добавление/редактирование автора;
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public AuthorDtoResponse createAuthor(@Valid @RequestBody CreateAuthorDtoRequest request) {
+    public AuthorDtoResponse createAuthor(@Valid @RequestBody AuthorDtoRequest authorDtoRequest) {
         LOGGER.info("AuthorEndpoint create author");
-        return authorService.createAuthor(request);
+        return authorService.createAuthor(authorDtoRequest);
     }
 
     @PutMapping(value = "/{authorId}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public AuthorDtoResponse updateAuthor(@Valid @RequestBody UpdateAuthorDtoRequest request,
+    public AuthorDtoResponse updateAuthor(@RequestBody AuthorDtoRequest authorDtoRequest,
                                           @PathVariable("authorId") long authorId) throws ServerException {
         LOGGER.info("AuthorEndpoint create author");
-        return authorService.updateAuthor(request, authorId);
+        return authorService.updateAuthor(authorDtoRequest, authorId);
     }
 
     //назначение/удаление книги автору;

@@ -2,9 +2,8 @@ package edu.asoldatov.library.service.impl;
 
 import edu.asoldatov.library.dto.mapper.AuthorDtoMapper;
 import edu.asoldatov.library.dto.request.AddBookToAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.CreateAuthorDtoRequest;
+import edu.asoldatov.library.dto.request.AuthorDtoRequest;
 import edu.asoldatov.library.dto.request.DeleteBookFromAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.UpdateAuthorDtoRequest;
 import edu.asoldatov.library.dto.response.AuthorDtoResponse;
 import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
@@ -37,8 +36,8 @@ public class AuthorServiceImpl implements AuthorService {
 
 
     @Override
-    public AuthorDtoResponse createAuthor(CreateAuthorDtoRequest request) {
-        Author author = AUTHOR_DTO_MAPPER.toAuthor(request);
+    public AuthorDtoResponse createAuthor(AuthorDtoRequest authorDtoRequest) {
+        Author author = AUTHOR_DTO_MAPPER.toAuthor(authorDtoRequest);
 
         author.setBooks(new ArrayList<>());
 
@@ -48,34 +47,34 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDtoResponse updateAuthor(UpdateAuthorDtoRequest request, long authorId) throws ServerException {
+    public AuthorDtoResponse updateAuthor(AuthorDtoRequest authorDtoRequest, long authorId) throws ServerException {
         Author author = getAuthorById(authorId);
 
-        String firstName = request.getFirstName();
+        String firstName = authorDtoRequest.getFirstName();
 
         if (firstName != null) {
             author.setFirstName(firstName);
         }
 
-        String lastName = request.getLastName();
+        String lastName = authorDtoRequest.getLastName();
 
         if (lastName != null) {
             author.setLastName(lastName);
         }
 
-        String patronymic = request.getPatronymic();
+        String patronymic = authorDtoRequest.getPatronymic();
 
         if (patronymic != null) {
             author.setPatronymic(patronymic);
         }
 
-        Integer yearOfBirth = request.getYearOfBirth();
+        Integer yearOfBirth = authorDtoRequest.getYearOfBirth();
 
         if (yearOfBirth != null) {
             author.setYearOfBirth(yearOfBirth);
         }
 
-        String biography = request.getBiography();
+        String biography = authorDtoRequest.getBiography();
 
         if (biography != null) {
             author.setBiography(biography);

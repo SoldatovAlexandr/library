@@ -1,6 +1,6 @@
 package edu.asoldatov.library.controllers;
 
-import edu.asoldatov.library.dto.request.CreateGenreDtoRequest;
+import edu.asoldatov.library.dto.request.GenreDtoRequest;
 import edu.asoldatov.library.dto.response.GenreDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.GenreService;
@@ -36,16 +36,16 @@ public class GenreController {
 
         model.addAttribute("genres", genres);
 
-        model.addAttribute("genre", new CreateGenreDtoRequest());
+        model.addAttribute("genre", new GenreDtoRequest());
 
         return "genres";
     }
 
     @PostMapping(path = "/genres")
-    public String addGenre(@ModelAttribute(name = "genre") @Valid CreateGenreDtoRequest request, Model model) {
+    public String addGenre(@ModelAttribute(name = "genre") @Valid GenreDtoRequest genreDtoRequest, Model model) {
         LOGGER.info("GenreController add new genre");
 
-        genreService.createGenre(request);
+        genreService.createGenre(genreDtoRequest);
 
         List<GenreDtoResponse> genres = genreService.getGenres();
 

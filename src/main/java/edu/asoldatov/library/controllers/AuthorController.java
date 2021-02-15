@@ -1,7 +1,6 @@
 package edu.asoldatov.library.controllers;
 
-import edu.asoldatov.library.dto.request.CreateAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.UpdateAuthorDtoRequest;
+import edu.asoldatov.library.dto.request.AuthorDtoRequest;
 import edu.asoldatov.library.dto.response.AuthorDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.AuthorService;
@@ -37,16 +36,16 @@ public class AuthorController {
 
         model.addAttribute("authors", authors);
 
-        model.addAttribute("author", new CreateAuthorDtoRequest());
+        model.addAttribute("author", new AuthorDtoRequest());
 
         return "authors";
     }
 
     @PostMapping(path = "/authors")
-    public String addAuthor(@ModelAttribute(name = "author") @Valid CreateAuthorDtoRequest request, Model model) {
+    public String addAuthor(@ModelAttribute(name = "author") @Valid AuthorDtoRequest authorDtoRequest, Model model) {
         LOGGER.info("AuthorController add new author");
 
-        authorService.createAuthor(request);
+        authorService.createAuthor(authorDtoRequest);
 
         List<AuthorDtoResponse> authors = authorService.getAllAuthors();
 
@@ -63,7 +62,7 @@ public class AuthorController {
 
         model.addAttribute("author", author);
 
-        model.addAttribute("updateAuthor", new UpdateAuthorDtoRequest());
+        model.addAttribute("updateAuthor", new AuthorDtoRequest());
 
         return "author";
     }
@@ -71,14 +70,14 @@ public class AuthorController {
     @PostMapping(path = "/authors/{authorId}")
     public String updateAuthor(Model model,
                                @PathVariable("authorId") long authorId,
-                               @Valid UpdateAuthorDtoRequest request) throws ServerException {
+                               AuthorDtoRequest request) throws ServerException {
         LOGGER.info("AuthorController update author");
 
         AuthorDtoResponse author = authorService.updateAuthor(request, authorId);
 
         model.addAttribute("author", author);
 
-        model.addAttribute("updateAuthor", new UpdateAuthorDtoRequest());
+        model.addAttribute("updateAuthor", new AuthorDtoRequest());
 
         return "author";
     }

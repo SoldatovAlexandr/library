@@ -1,7 +1,7 @@
 package edu.asoldatov.library.service.impl;
 
 import edu.asoldatov.library.dto.mapper.GenreDtoMapper;
-import edu.asoldatov.library.dto.request.CreateGenreDtoRequest;
+import edu.asoldatov.library.dto.request.GenreDtoRequest;
 import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.dto.response.GenreDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
@@ -28,8 +28,8 @@ public class GenreServiceImpl implements GenreService {
 
 
     @Override
-    public GenreDtoResponse createGenre(CreateGenreDtoRequest request) {
-        Genre genre = GENRE_DTO_MAPPER.toGenre(request);
+    public GenreDtoResponse createGenre(GenreDtoRequest genreDtoRequest) {
+        Genre genre = GENRE_DTO_MAPPER.toGenre(genreDtoRequest);
 
         genreRepository.save(genre);
 
@@ -51,10 +51,10 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public GenreDtoResponse updateGenre(CreateGenreDtoRequest request, long genreId) throws ServerException {
+    public GenreDtoResponse updateGenre(GenreDtoRequest genreDtoRequest, long genreId) throws ServerException {
         Genre genre = getGenreById(genreId);
 
-        String name = request.getName();
+        String name = genreDtoRequest.getName();
 
         genre.setName(name);
 

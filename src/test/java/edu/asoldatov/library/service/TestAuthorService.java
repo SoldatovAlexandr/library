@@ -1,9 +1,8 @@
 package edu.asoldatov.library.service;
 
 import edu.asoldatov.library.dto.request.AddBookToAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.CreateAuthorDtoRequest;
+import edu.asoldatov.library.dto.request.AuthorDtoRequest;
 import edu.asoldatov.library.dto.request.DeleteBookFromAuthorDtoRequest;
-import edu.asoldatov.library.dto.request.UpdateAuthorDtoRequest;
 import edu.asoldatov.library.dto.response.AuthorDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.Author;
@@ -40,11 +39,11 @@ public class TestAuthorService {
     public void testCreateAuthor() {
         AuthorService authorService = new AuthorServiceImpl(authorRepository, bookRepository);
 
-        CreateAuthorDtoRequest request = new CreateAuthorDtoRequest("firstname", "lastname", "patronymic", 2000, "biography");
+        AuthorDtoRequest authorDtoRequest = new AuthorDtoRequest("firstname", "lastname", "patronymic", 2000, "biography");
 
         AuthorDtoResponse expectedResponse = new AuthorDtoResponse(0L, "firstname", "lastname", "patronymic", 2000, "biography", new HashSet<>());
 
-        AuthorDtoResponse response = authorService.createAuthor(request);
+        AuthorDtoResponse response = authorService.createAuthor(authorDtoRequest);
 
         Assertions.assertAll(
                 () -> verify(authorRepository).save(any()),
@@ -58,13 +57,13 @@ public class TestAuthorService {
 
         Author author = new Author(1L, "Иван", "Иванов", "Иванович", 1980, "Биография", new ArrayList<>());
 
-        UpdateAuthorDtoRequest request = new UpdateAuthorDtoRequest("firstname", "lastname", "patronymic", 2000, "biography");
+        AuthorDtoRequest authorDtoRequest = new AuthorDtoRequest("firstname", "lastname", "patronymic", 2000, "biography");
 
         AuthorDtoResponse expectedResponse = new AuthorDtoResponse(1L, "firstname", "lastname", "patronymic", 2000, "biography", new HashSet<>());
 
         when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
 
-        AuthorDtoResponse response = authorService.updateAuthor(request, 1L);
+        AuthorDtoResponse response = authorService.updateAuthor(authorDtoRequest, 1L);
 
         Assertions.assertAll(
                 () -> verify(authorRepository).save(any()),

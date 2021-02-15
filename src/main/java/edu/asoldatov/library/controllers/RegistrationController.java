@@ -1,6 +1,6 @@
 package edu.asoldatov.library.controllers;
 
-import edu.asoldatov.library.dto.request.RegisterUserDtoRequest;
+import edu.asoldatov.library.dto.request.UserDtoRequest;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.UserService;
 import org.slf4j.Logger;
@@ -30,14 +30,14 @@ public class RegistrationController {
     public String registration(Model model) {
         LOGGER.info("RegistrationController get registration page");
 
-        model.addAttribute("user", new RegisterUserDtoRequest());
+        model.addAttribute("user", new UserDtoRequest());
 
         return "registration";
     }
 
     @PostMapping(path = "/registration")
     public String registerUser(
-            @ModelAttribute(name = "user") @Valid RegisterUserDtoRequest request,
+            @ModelAttribute(name = "user") @Valid UserDtoRequest userDtoRequest,
             BindingResult bindingResult,
             Model model) throws ServerException {
         LOGGER.info("RegistrationController register new user");
@@ -46,7 +46,7 @@ public class RegistrationController {
             return "registration";
         }
 
-        userService.registerUser(request, bindingResult, model);
+        userService.registerUser(userDtoRequest, bindingResult, model);
 
         return "redirect:/";
     }

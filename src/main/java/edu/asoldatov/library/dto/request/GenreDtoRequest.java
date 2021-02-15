@@ -9,14 +9,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateBookDtoRequest {
-
+public class GenreDtoRequest {
     @NotNull(message = "NAME_NOT_SET")
     private String name;
-
-    @NotNull(message = "YEAR_OF_PUBLISHING_NOT_SET")
-    private Integer yearOfPublishing;
-
-    @NotNull(message = "GENRE_ID_NOT_SET")
-    private Long genreId;
 }
