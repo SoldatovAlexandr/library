@@ -62,10 +62,6 @@ public class UserServiceImpl implements UserService {
             throw new ServerException(ServerErrorCodeWithField.WRONG_USERNAME);
         }
 
-        if (!equalsPassword(userDtoRequest)) {
-            throw new ServerException(ServerErrorCodeWithField.PASSWORDS_NOT_EQUALS);
-        }
-
         setRoles(user);
 
         user.setPassword(bCryptPasswordEncoder.encode(userDtoRequest.getPassword()));
@@ -103,14 +99,7 @@ public class UserServiceImpl implements UserService {
         return roleRepository.findByName(roleName).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.EMPTY_DATABASE));
     }
 
-
-    //TODO
-    private boolean equalsPassword(UserDtoRequest userDtoRequest) {
-        return userDtoRequest.getPassword().equals(userDtoRequest.getPasswordConfirm());
-    }
-
     protected boolean hasUsername(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
-
 }

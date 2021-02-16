@@ -2,7 +2,6 @@ package edu.asoldatov.library.service.impl;
 
 import edu.asoldatov.library.dto.mapper.GenreDtoMapper;
 import edu.asoldatov.library.dto.request.GenreDtoRequest;
-import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.dto.response.GenreDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
 import edu.asoldatov.library.erroritem.exception.ServerException;
@@ -63,12 +62,10 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public EmptyDtoResponse deleteGenre(long genreId) throws ServerException {
+    public void deleteGenre(long genreId) throws ServerException {
         Genre genre = getGenreById(genreId);
 
         genreRepository.delete(genre);
-
-        return new EmptyDtoResponse();
     }
 
     private Genre getGenreById(long genreId) throws ServerException {

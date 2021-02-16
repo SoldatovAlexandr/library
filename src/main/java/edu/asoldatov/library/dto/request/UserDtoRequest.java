@@ -1,17 +1,17 @@
 package edu.asoldatov.library.dto.request;
 
 
+import edu.asoldatov.library.validator.ConfirmPasswords;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ConfirmPasswords(password = "password", confirmPassword = "passwordConfirm")
 public class UserDtoRequest {
     @Size(min = 2, message = "Не меньше 5 знаков")
     private String username;
@@ -30,7 +30,8 @@ public class UserDtoRequest {
     @NotBlank(message = "Отчество не может быть пустым")
     private String patronymic;
 
-    //todo
+    @Max(value = 2021, message = "Не корректный год рождения")
+    @Min(value = 0, message = "Год рождения не может быть отрицательным")
     @NotNull(message = "Год рождения не может быть пустым")
     private Integer yearOfBirth;
 }

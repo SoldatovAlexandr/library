@@ -1,7 +1,6 @@
 package edu.asoldatov.library.service;
 
 import edu.asoldatov.library.dto.request.GenreDtoRequest;
-import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.dto.response.GenreDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 
@@ -17,5 +16,5 @@ public interface GenreService {
 
     GenreDtoResponse updateGenre(GenreDtoRequest genreDtoRequest, long genreId) throws ServerException;
 
-    EmptyDtoResponse deleteGenre(long genreId) throws ServerException;
+    void deleteGenre(long genreId) throws ServerException;
 }

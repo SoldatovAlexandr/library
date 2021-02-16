@@ -3,6 +3,7 @@ package edu.asoldatov.library.controllers;
 import edu.asoldatov.library.dto.request.UserDtoRequest;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
+@Slf4j
 @Controller
 public class RegistrationController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
     private final UserService userService;
 
@@ -28,7 +29,7 @@ public class RegistrationController {
 
     @GetMapping(path = "/registration")
     public String registration(Model model) {
-        LOGGER.info("RegistrationController get registration page");
+        log.info("RegistrationController get registration page");
 
         model.addAttribute("user", new UserDtoRequest());
 
@@ -38,9 +39,8 @@ public class RegistrationController {
     @PostMapping(path = "/registration")
     public String registerUser(
             @ModelAttribute(name = "user") @Valid UserDtoRequest userDtoRequest,
-            BindingResult bindingResult,
-            Model model) throws ServerException {
-        LOGGER.info("RegistrationController register new user");
+            BindingResult bindingResult) throws ServerException {
+        log.info("RegistrationController register new user");
 
         if (bindingResult.hasErrors()) {
             return "registration";

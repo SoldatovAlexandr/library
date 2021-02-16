@@ -35,7 +35,6 @@ public class TestUserService {
     private final static String ROLE_USER = "ROLE_USER";
     private final static String ROLE_ADMIN = "ROLE_ADMIN";
     private final static String ENCODED_PASSWORD = "ENCODED PASSWORD";
-    private final static String ANOTHER_PASSWORD = "ANOTHER_PASSWORD";
     private final static Integer YEAR_OF_BIRTH = 2000;
     @MockBean
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -125,7 +124,7 @@ public class TestUserService {
     }
 
     @Test
-    public void testRegisterUserFail1() {
+    public void testRegisterUserFail() {
         UserService userService = new UserServiceImpl(bCryptPasswordEncoder, userRepository, roleRepository);
 
         User user = new User(1L, USER_NAME, PASSWORD, new HashSet<>(), FIRST_NAME, LAST_NAME, PATRONYMIC, YEAR_OF_BIRTH);
@@ -133,26 +132,6 @@ public class TestUserService {
         when(userRepository.findByUsername(USER_NAME)).thenReturn(Optional.of(user));
 
         UserDtoRequest userDtoRequest = new UserDtoRequest(USER_NAME, PASSWORD, PASSWORD,
-                FIRST_NAME, LAST_NAME, PATRONYMIC, YEAR_OF_BIRTH);
-
-        Assertions.assertThrows(
-                ServerException.class, () -> userService.registerUser(userDtoRequest)
-        );
-    }
-
-    @Test
-    public void testRegisterUserFail2() {
-        UserService userService = new UserServiceImpl(bCryptPasswordEncoder, userRepository, roleRepository);
-
-        Role role = new Role(1L, ROLE_USER);
-
-        when(userRepository.findByUsername(USER_NAME)).thenReturn(Optional.empty());
-
-        when(roleRepository.findByName(ROLE_USER)).thenReturn(Optional.of(role));
-
-        when(bCryptPasswordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
-
-        UserDtoRequest userDtoRequest = new UserDtoRequest(USER_NAME, PASSWORD, ANOTHER_PASSWORD,
                 FIRST_NAME, LAST_NAME, PATRONYMIC, YEAR_OF_BIRTH);
 
         Assertions.assertThrows(

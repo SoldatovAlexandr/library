@@ -4,7 +4,6 @@ import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.mapper.AuthorDtoMapper;
 import edu.asoldatov.library.dto.request.AuthorDtoRequest;
 import edu.asoldatov.library.dto.response.AuthorDtoResponse;
-import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.Author;
@@ -15,7 +14,6 @@ import edu.asoldatov.library.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,8 +34,6 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorDtoResponse createAuthor(AuthorDtoRequest authorDtoRequest) {
         Author author = AUTHOR_DTO_MAPPER.toAuthor(authorDtoRequest);
 
-        author.setBooks(new ArrayList<>());
-
         authorRepository.save(author);
 
         return AUTHOR_DTO_MAPPER.toAuthorDtoResponse(author);
@@ -47,35 +43,15 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorDtoResponse updateAuthor(AuthorDtoRequest authorDtoRequest, long authorId) throws ServerException {
         Author author = getAuthorById(authorId);
 
-        String firstName = authorDtoRequest.getFirstName();
+        author.setFirstName(authorDtoRequest.getFirstName());
 
-        if (firstName != null) {
-            author.setFirstName(firstName);
-        }
+        author.setLastName(authorDtoRequest.getLastName());
 
-        String lastName = authorDtoRequest.getLastName();
+        author.setPatronymic(authorDtoRequest.getPatronymic());
 
-        if (lastName != null) {
-            author.setLastName(lastName);
-        }
+        author.setYearOfBirth(authorDtoRequest.getYearOfBirth());
 
-        String patronymic = authorDtoRequest.getPatronymic();
-
-        if (patronymic != null) {
-            author.setPatronymic(patronymic);
-        }
-
-        Integer yearOfBirth = authorDtoRequest.getYearOfBirth();
-
-        if (yearOfBirth != null) {
-            author.setYearOfBirth(yearOfBirth);
-        }
-
-        String biography = authorDtoRequest.getBiography();
-
-        if (biography != null) {
-            author.setBiography(biography);
-        }
+        author.setBiography(authorDtoRequest.getBiography());
 
         authorRepository.save(author);
 
@@ -84,7 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
 
 
     @Override
-    public EmptyDtoResponse addBookToAuthor(long authorId, IdDto idDto) throws ServerException {
+    public void addBookToAuthor(long authorId, IdDto idDto) throws ServerException {
         Author author = getAuthorById(authorId);
 
         Book book = getBookById(idDto.getId());
@@ -92,13 +68,11 @@ public class AuthorServiceImpl implements AuthorService {
         author.getBooks().add(book);
 
         authorRepository.save(author);
-
-        return new EmptyDtoResponse();
     }
 
 
     @Override
-    public EmptyDtoResponse deleteBookFromAuthor(long authorId, IdDto idDto) throws ServerException {
+    public void deleteBookFromAuthor(long authorId, IdDto idDto) throws ServerException {
         Author author = getAuthorById(authorId);
 
         Book book = getBookById(idDto.getId());
@@ -106,8 +80,6 @@ public class AuthorServiceImpl implements AuthorService {
         author.getBooks().remove(book);
 
         authorRepository.save(author);
-
-        return new EmptyDtoResponse();
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthorDtoResponse {
-    private long id;
+    private Long id;
 
     private String firstName;
 

@@ -40,7 +40,7 @@ public class TestAuthorService {
 
         AuthorDtoRequest authorDtoRequest = new AuthorDtoRequest("firstname", "lastname", "patronymic", 2000, "biography");
 
-        AuthorDtoResponse expectedResponse = new AuthorDtoResponse(0L, "firstname", "lastname", "patronymic", 2000, "biography", new HashSet<>());
+        AuthorDtoResponse expectedResponse = new AuthorDtoResponse(null, "firstname", "lastname", "patronymic", 2000, "biography", new HashSet<>());
 
         AuthorDtoResponse response = authorService.createAuthor(authorDtoRequest);
 
@@ -153,5 +153,4 @@ public class TestAuthorService {
                 () -> verify(authorRepository).save(any())
         );
     }
-
 }

@@ -54,25 +54,13 @@ public class BookServiceImpl implements BookService {
     public BookDtoResponse updateBook(BookDtoRequest bookDtoRequest, long bookId) throws ServerException {
         Book book = getBookById(bookId);
 
-        String name = bookDtoRequest.getName();
+        book.setName(bookDtoRequest.getName());
 
-        if (name != null) {
-            book.setName(name);
-        }
+        book.setYearOfPublishing(bookDtoRequest.getYearOfPublishing());
 
-        Integer yearOfPublishing = bookDtoRequest.getYearOfPublishing();
+        Genre genre = getGenreById(bookDtoRequest.getGenreId());
 
-        if (yearOfPublishing != null) {
-            book.setYearOfPublishing(yearOfPublishing);
-        }
-
-        Long genreId = bookDtoRequest.getGenreId();
-
-        if (genreId != null) {
-            Genre genre = getGenreById(genreId);
-
-            book.getGenres().add(genre);
-        }
+        book.getGenres().add(genre);
 
         bookRepository.save(book);
 

@@ -67,10 +67,10 @@
                         </div>
 
                         <div>
-                            <form:input type="number" path="genreId" placeholder="Добавить жанр" autofocus="true"/>
+                            <form:input type="number" value="1" path="genreId"
+                                        placeholder="Добавить жанр" autofocus="true"/>
                             <form:errors path="genreId"/>
                         </div>
-
 
                         <button type="submit">Добавить</button>
 

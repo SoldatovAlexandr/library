@@ -11,7 +11,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthorDtoRequest {
-    @NotNull(message = "FIRST_NAME_NOT_SET")
+    @NotNull(message = "key")
+
     private String firstName;
 
     @NotNull(message = "LAST_NAME_NOT_SET")

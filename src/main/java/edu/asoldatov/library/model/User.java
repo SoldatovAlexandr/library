@@ -2,24 +2,26 @@ package edu.asoldatov.library.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Collection;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class User extends AbstractPersistable<Long> implements UserDetails {
     private String username;
 
     private String password;
@@ -35,6 +37,7 @@ public class User implements UserDetails {
 
     private Integer yearOfBirth;
 
+
     public User(String username, String firstName, String lastName, String patronymic, int yearOfBirth) {
         this.username = username;
         this.firstName = firstName;
@@ -42,6 +45,12 @@ public class User implements UserDetails {
         this.patronymic = patronymic;
         this.yearOfBirth = yearOfBirth;
     }
+
+    public User(long id, String username, String password, Set<Role> roles, String firstName, String lastName, String patronymic, Integer yearOfBirth) {
+        this(username, password, roles, firstName, lastName, patronymic, yearOfBirth);
+        this.setId(id);
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

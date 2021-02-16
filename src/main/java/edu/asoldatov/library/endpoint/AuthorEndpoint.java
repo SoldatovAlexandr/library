@@ -3,7 +3,6 @@ package edu.asoldatov.library.endpoint;
 import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.request.AuthorDtoRequest;
 import edu.asoldatov.library.dto.response.AuthorDtoResponse;
-import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.AuthorService;
 import org.slf4j.Logger;
@@ -46,19 +45,19 @@ public class AuthorEndpoint {
 
     @PostMapping(value = "/{authorId}/books", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public EmptyDtoResponse addBookToAuthor(@PathVariable("authorId") long authorId,
-                                            @Valid @RequestBody IdDto idDto)
+    public void addBookToAuthor(@PathVariable("authorId") long authorId,
+                                @Valid @RequestBody IdDto idDto)
             throws ServerException {
         LOGGER.info("AuthorEndpoint add book to the author");
-        return authorService.addBookToAuthor(authorId, idDto);
+        authorService.addBookToAuthor(authorId, idDto);
     }
 
     @DeleteMapping(value = "/{authorId}/books", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public EmptyDtoResponse deleteBookFromAuthor(@PathVariable("authorId") long authorId,
-                                                 @Valid @RequestBody IdDto idDto)
+    public void deleteBookFromAuthor(@PathVariable("authorId") long authorId,
+                                     @Valid @RequestBody IdDto idDto)
             throws ServerException {
         LOGGER.info("AuthorEndpoint delete book from the author");
-        return authorService.deleteBookFromAuthor(authorId, idDto);
+        authorService.deleteBookFromAuthor(authorId, idDto);
     }
 }

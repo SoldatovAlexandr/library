@@ -1,27 +1,27 @@
 package edu.asoldatov.library.model;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Genre {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class Genre extends AbstractPersistable<Long> {
 
     private String name;
 
     public Genre(String name) {
+        this(0L, name);
+    }
+
+    public Genre(long id, String name) {
+        this.setId(id);
         this.name = name;
     }
 }

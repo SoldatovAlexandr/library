@@ -1,7 +1,6 @@
 package edu.asoldatov.library.endpoint;
 
 import edu.asoldatov.library.dto.request.GenreDtoRequest;
-import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.dto.response.GenreDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.GenreService;
@@ -55,8 +54,8 @@ public class GenreEndpoint {
     }
 
     @DeleteMapping(value = "/{genreId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public EmptyDtoResponse deleteGenre(@PathVariable("genreId") long genreId) throws ServerException {
+    public void deleteGenre(@PathVariable("genreId") long genreId) throws ServerException {
         LOGGER.info("GenreEndpoint delete genre");
-        return genreService.deleteGenre(genreId);
+        genreService.deleteGenre(genreId);
     }
 }

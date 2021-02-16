@@ -34,15 +34,13 @@ public class TestGenreService {
 
         GenreDtoRequest genreDtoRequest = new GenreDtoRequest(GENRE_NAME);
 
-        Genre genre = new Genre(GENRE_NAME);
-
         GenreDtoResponse expectedResponse = new GenreDtoResponse(0, GENRE_NAME);
 
         GenreDtoResponse genreDtoResponse = genreService.createGenre(genreDtoRequest);
 
         Assertions.assertAll(
                 () -> Assertions.assertEquals(expectedResponse, genreDtoResponse),
-                () -> verify(genreRepository).save(genre)
+                () -> verify(genreRepository).save(any())
         );
     }
 

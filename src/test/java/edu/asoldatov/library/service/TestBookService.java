@@ -131,9 +131,7 @@ public class TestBookService {
 
         Book book = new Book(10L, "name", 2000, null, new HashSet<>(), new HashSet<>());
 
-        User user = new User("username", "firstname", "lastname", "patronymic", 2000);
-
-        user.setId(1L);
+        User user = new User(1L, "username", "password", new HashSet<>(), "firstname", "lastname", "patronymic", 2000);
 
         when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
@@ -151,11 +149,9 @@ public class TestBookService {
     public void testTakeBookFail() {
         BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
-        User user = new User("username", "firstname", "lastname", "patronymic", 2000);
+        User user = new User(1L, "username", "password", new HashSet<>(), "firstname", "lastname", "patronymic", 2000);
 
         Book book = new Book(10L, "name", 2000, user, new HashSet<>(), new HashSet<>());
-
-        user.setId(1L);
 
         when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
@@ -170,11 +166,9 @@ public class TestBookService {
     public void testReturnBook() throws ServerException {
         BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
-        User user = new User("username", "firstname", "lastname", "patronymic", 2000);
+        User user = new User(1L, "username", "password", new HashSet<>(), "firstname", "lastname", "patronymic", 2000);
 
         Book book = new Book(10L, "name", 2000, user, new HashSet<>(), new HashSet<>());
-
-        user.setId(1L);
 
         when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
@@ -192,15 +186,11 @@ public class TestBookService {
     public void testReturnBookFail() {
         BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
-        User owner = new User("username", "firstname", "lastname", "patronymic", 2000);
+        User owner = new User(1L, "username", "password", new HashSet<>(), "firstname", "lastname", "patronymic", 2000);
 
-        User user = new User("username", "firstname", "lastname", "patronymic", 2000);
+        User user = new User(2L, "username", "password", new HashSet<>(), "firstname", "lastname", "patronymic", 2000);
 
         Book book = new Book(10L, "name", 2000, owner, new HashSet<>(), new HashSet<>());
-
-        user.setId(1L);
-
-        owner.setId(2L);
 
         when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
 
