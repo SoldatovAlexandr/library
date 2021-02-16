@@ -21,11 +21,9 @@ import java.util.List;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    private final AuthorRepository authorRepository;
-
-    private final BookRepository bookRepository;
-
     private final static AuthorDtoMapper AUTHOR_DTO_MAPPER = AuthorDtoMapper.INSTANCE;
+    private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
     public AuthorServiceImpl(AuthorRepository authorRepository, BookRepository bookRepository) {

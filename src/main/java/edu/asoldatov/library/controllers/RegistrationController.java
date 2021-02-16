@@ -46,7 +46,7 @@ public class RegistrationController {
             return "registration";
         }
 
-        userService.registerUser(userDtoRequest, bindingResult, model);
+        userService.registerUser(userDtoRequest);
 
         return "redirect:/";
     }

@@ -9,7 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -29,7 +32,7 @@ public class AdminController {
     public String getAllUsers(Model model) {
         LOGGER.info("AdminController get all users");
 
-        List<UserDtoResponse> users = userService.allUsers(model);
+        List<UserDtoResponse> users = userService.allUsers();
 
         model.addAttribute("addAdmin", new IdDto());
 
@@ -44,7 +47,7 @@ public class AdminController {
 
         userService.addAdminRole(idDto);
 
-        List<UserDtoResponse> users = userService.allUsers(model);
+        List<UserDtoResponse> users = userService.allUsers();
 
         model.addAttribute("addAdmin", new IdDto());
 

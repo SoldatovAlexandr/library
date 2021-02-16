@@ -25,12 +25,12 @@ public class Role implements GrantedAuthority {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
+    public Role(long id, String name) {
+        this(id, name, new HashSet<>());
+    }
+
     @Override
     public String getAuthority() {
         return getName();
-    }
-
-    public Role(long id, String name) {
-        this(id, name, new HashSet<>());
     }
 }

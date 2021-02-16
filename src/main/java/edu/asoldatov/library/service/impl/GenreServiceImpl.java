@@ -17,9 +17,8 @@ import java.util.List;
 @Service
 public class GenreServiceImpl implements GenreService {
 
-    private final GenreRepository genreRepository;
-
     private final static GenreDtoMapper GENRE_DTO_MAPPER = GenreDtoMapper.INSTANCE;
+    private final GenreRepository genreRepository;
 
     @Autowired
     public GenreServiceImpl(GenreRepository genreRepository) {
@@ -45,7 +44,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public List<GenreDtoResponse> getGenres() {
-        Iterable<Genre> genres = genreRepository.findAll();
+        List<Genre> genres = genreRepository.findAll();
 
         return GENRE_DTO_MAPPER.toGenreDtoResponses(genres);
     }

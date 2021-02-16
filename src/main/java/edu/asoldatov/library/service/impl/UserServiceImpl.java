@@ -1,7 +1,7 @@
 package edu.asoldatov.library.service.impl;
 
-import edu.asoldatov.library.dto.mapper.UserDtoMapper;
 import edu.asoldatov.library.dto.IdDto;
+import edu.asoldatov.library.dto.mapper.UserDtoMapper;
 import edu.asoldatov.library.dto.request.UserDtoRequest;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
@@ -16,8 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,19 +23,13 @@ import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    private final UserRepository userRepository;
-
-    private final RoleRepository roleRepository;
-
     private final static UserDtoMapper USER_DTO_MAPPER = UserDtoMapper.INSTANCE;
-
     private final static String USER_NOT_FOUND = "User not found";
-
     private final static String USER = "ROLE_USER";
-
     private final static String ADMIN = "ROLE_ADMIN";
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder,
@@ -55,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserDtoResponse> allUsers(Model model) {
+    public List<UserDtoResponse> allUsers() {
         Iterable<User> users = userRepository.findAll();
 
         return USER_DTO_MAPPER.toUserDtoResponses(users);
@@ -63,19 +55,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDtoResponse registerUser(UserDtoRequest userDtoRequest,
-                                        BindingResult bindingResult, Model model) throws ServerException {
-        String username = userDtoRequest.getUsername();
+    public UserDtoResponse registerUser(UserDtoRequest userDtoRequest) throws ServerException {
+        User user = USER_DTO_MAPPER.toUser(userDtoRequest);
 
-        if (hasUsername(username)) {
+        if (hasUsername(user.getUsername())) {
             throw new ServerException(ServerErrorCodeWithField.WRONG_USERNAME);
         }
 
         if (!equalsPassword(userDtoRequest)) {
             throw new ServerException(ServerErrorCodeWithField.PASSWORDS_NOT_EQUALS);
         }
-
-        User user = USER_DTO_MAPPER.toUser(userDtoRequest);
 
         setRoles(user);
 

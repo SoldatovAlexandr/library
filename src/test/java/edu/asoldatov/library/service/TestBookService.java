@@ -1,7 +1,7 @@
 package edu.asoldatov.library.service;
 
-import edu.asoldatov.library.dto.request.BookDtoRequest;
 import edu.asoldatov.library.dto.IdDto;
+import edu.asoldatov.library.dto.request.BookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.Author;
@@ -223,7 +223,7 @@ public class TestBookService {
 
         when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
 
-        IdDto idDto= new IdDto(1L);
+        IdDto idDto = new IdDto(1L);
 
         BookDtoResponse response = bookService.addAuthor(idDto, 10L);
 

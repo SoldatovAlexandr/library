@@ -1,8 +1,8 @@
 package edu.asoldatov.library.service.impl;
 
+import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.mapper.BookDtoMapper;
 import edu.asoldatov.library.dto.request.BookDtoRequest;
-import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
 import edu.asoldatov.library.erroritem.exception.ServerException;
@@ -23,13 +23,10 @@ import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private final BookRepository bookRepository;
-
-    private final GenreRepository genreRepository;
-
-    private final AuthorRepository authorRepository;
-
     private final static BookDtoMapper BOOK_DTO_MAPPER = BookDtoMapper.INSTANCE;
+    private final BookRepository bookRepository;
+    private final GenreRepository genreRepository;
+    private final AuthorRepository authorRepository;
 
     @Autowired
     public BookServiceImpl(BookRepository bookRepository, GenreRepository genreRepository, AuthorRepository authorRepository) {
@@ -134,7 +131,7 @@ public class BookServiceImpl implements BookService {
 
         Book book = getBookById(bookId);
 
-        Long authorId= idDto.getId();
+        Long authorId = idDto.getId();
 
         Author author = getAuthorById(authorId);
 
