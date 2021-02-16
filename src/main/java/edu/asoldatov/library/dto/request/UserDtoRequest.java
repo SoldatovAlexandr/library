@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +30,7 @@ public class UserDtoRequest {
     @NotBlank(message = "Отчество не может быть пустым")
     private String patronymic;
 
+    //todo
     @NotNull(message = "Год рождения не может быть пустым")
     private Integer yearOfBirth;
 }

@@ -1,8 +1,7 @@
 package edu.asoldatov.library.controllers;
 
-import edu.asoldatov.library.dto.request.AddAuthorToBookDtoRequest;
 import edu.asoldatov.library.dto.request.BookDtoRequest;
-import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
+import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.User;
@@ -67,9 +66,7 @@ public class BookController {
 
         model.addAttribute("book", book);
 
-        model.addAttribute("deleteAuthor", new DeleteAuthorFromBookDtoRequest());
-
-        model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
+        model.addAttribute("addAuthor", new IdDto());
 
         model.addAttribute("updateBook", new BookDtoRequest());
 
@@ -86,9 +83,7 @@ public class BookController {
 
         model.addAttribute("book", book);
 
-        model.addAttribute("deleteAuthor", new DeleteAuthorFromBookDtoRequest());
-
-        model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
+        model.addAttribute("addAuthor", new IdDto());
 
         model.addAttribute("updateBook", new BookDtoRequest());
 
@@ -98,35 +93,33 @@ public class BookController {
     @PostMapping(path = "/books/{bookId}/authors")
     public String addAuthorToBook(Model model,
                                   @PathVariable("bookId") long bookId,
-                                  AddAuthorToBookDtoRequest request) throws ServerException {
+                                  IdDto idDto
+    ) throws ServerException {
         LOGGER.info("BookController add author to the book");
 
-        BookDtoResponse book = bookService.addAuthor(request, bookId);
+        BookDtoResponse book = bookService.addAuthor(idDto, bookId);
 
         model.addAttribute("book", book);
 
-        model.addAttribute("deleteAuthor", new DeleteAuthorFromBookDtoRequest());
-
-        model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
+        model.addAttribute("addAuthor", new IdDto());
 
         model.addAttribute("updateBook", new BookDtoRequest());
 
         return "book";
     }
 
-    @PostMapping(path = "/books/{bookId}/authors/delete")
+    @PostMapping(path = "/books/{bookId}/authors/{authorId}/delete")
     public String deleteAuthorFromBook(Model model,
                                        @PathVariable("bookId") long bookId,
-                                       DeleteAuthorFromBookDtoRequest request) throws ServerException {
+                                       @PathVariable("authorId") long authorId
+    ) throws ServerException {
         LOGGER.info("BookController delete author from the book");
 
-        BookDtoResponse book = bookService.deleteAuthor(request, bookId);
+        BookDtoResponse book = bookService.deleteAuthor(authorId, bookId);
 
         model.addAttribute("book", book);
 
-        model.addAttribute("deleteAuthor", new DeleteAuthorFromBookDtoRequest());
-
-        model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
+        model.addAttribute("addAuthor", new IdDto());
 
         model.addAttribute("updateBook", new BookDtoRequest());
 
@@ -143,9 +136,7 @@ public class BookController {
 
         model.addAttribute("book", book);
 
-        model.addAttribute("deleteAuthor", new DeleteAuthorFromBookDtoRequest());
-
-        model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
+        model.addAttribute("addAuthor", new IdDto());
 
         model.addAttribute("updateBook", new BookDtoRequest());
 
@@ -163,9 +154,7 @@ public class BookController {
 
         model.addAttribute("book", book);
 
-        model.addAttribute("deleteAuthor", new DeleteAuthorFromBookDtoRequest());
-
-        model.addAttribute("addAuthor", new AddAuthorToBookDtoRequest());
+        model.addAttribute("addAuthor", new IdDto());
 
         model.addAttribute("updateBook", new BookDtoRequest());
 

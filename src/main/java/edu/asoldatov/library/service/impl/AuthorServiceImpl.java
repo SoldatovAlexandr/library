@@ -1,9 +1,8 @@
 package edu.asoldatov.library.service.impl;
 
+import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.mapper.AuthorDtoMapper;
-import edu.asoldatov.library.dto.request.AddBookToAuthorDtoRequest;
 import edu.asoldatov.library.dto.request.AuthorDtoRequest;
-import edu.asoldatov.library.dto.request.DeleteBookFromAuthorDtoRequest;
 import edu.asoldatov.library.dto.response.AuthorDtoResponse;
 import edu.asoldatov.library.dto.response.EmptyDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
@@ -87,10 +86,10 @@ public class AuthorServiceImpl implements AuthorService {
 
 
     @Override
-    public EmptyDtoResponse addBookToAuthor(long authorId, AddBookToAuthorDtoRequest request) throws ServerException {
+    public EmptyDtoResponse addBookToAuthor(long authorId, IdDto idDto) throws ServerException {
         Author author = getAuthorById(authorId);
 
-        Book book = getBookById(request.getBookId());
+        Book book = getBookById(idDto.getId());
 
         author.getBooks().add(book);
 
@@ -101,10 +100,10 @@ public class AuthorServiceImpl implements AuthorService {
 
 
     @Override
-    public EmptyDtoResponse deleteBookFromAuthor(long authorId, DeleteBookFromAuthorDtoRequest request) throws ServerException {
+    public EmptyDtoResponse deleteBookFromAuthor(long authorId, IdDto idDto) throws ServerException {
         Author author = getAuthorById(authorId);
 
-        Book book = getBookById(request.getBookId());
+        Book book = getBookById(idDto.getId());
 
         author.getBooks().remove(book);
 

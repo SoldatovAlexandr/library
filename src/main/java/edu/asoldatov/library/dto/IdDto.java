@@ -1,4 +1,4 @@
-package edu.asoldatov.library.dto.request;
+package edu.asoldatov.library.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteAuthorFromBookDtoRequest {
-    @NotNull(message = "AUTHOR_ID_NOT_SET")
-    private Long deleteAuthorId;
+public class IdDto {
+    @NotNull(message = "ID_NOT_SET")
+    private Long id;
 }

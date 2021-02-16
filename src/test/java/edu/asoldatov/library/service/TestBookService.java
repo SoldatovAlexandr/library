@@ -1,8 +1,7 @@
 package edu.asoldatov.library.service;
 
-import edu.asoldatov.library.dto.request.AddAuthorToBookDtoRequest;
 import edu.asoldatov.library.dto.request.BookDtoRequest;
-import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
+import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.Author;
@@ -224,9 +223,9 @@ public class TestBookService {
 
         when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
 
-        AddAuthorToBookDtoRequest request = new AddAuthorToBookDtoRequest(1L);
+        IdDto idDto= new IdDto(1L);
 
-        BookDtoResponse response = bookService.addAuthor(request, 10L);
+        BookDtoResponse response = bookService.addAuthor(idDto, 10L);
 
         Assertions.assertAll(
                 () -> verify(bookRepository).save(any()),
@@ -248,9 +247,7 @@ public class TestBookService {
 
         when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
 
-        DeleteAuthorFromBookDtoRequest request = new DeleteAuthorFromBookDtoRequest(1L);
-
-        BookDtoResponse response = bookService.deleteAuthor(request, 10L);
+        BookDtoResponse response = bookService.deleteAuthor(1L, 10L);
 
         Assertions.assertAll(
                 () -> verify(bookRepository).save(any()),

@@ -1,6 +1,6 @@
 package edu.asoldatov.library.controllers;
 
-import edu.asoldatov.library.dto.request.IdDto;
+import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.service.UserService;

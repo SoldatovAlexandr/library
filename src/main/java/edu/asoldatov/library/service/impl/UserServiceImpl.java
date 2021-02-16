@@ -1,7 +1,7 @@
 package edu.asoldatov.library.service.impl;
 
 import edu.asoldatov.library.dto.mapper.UserDtoMapper;
-import edu.asoldatov.library.dto.request.IdDto;
+import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.request.UserDtoRequest;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
 import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;

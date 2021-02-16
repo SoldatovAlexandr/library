@@ -43,6 +43,9 @@
             </h3>
             <c:forEach items="${book.authors}" var="authors">
                 <a href="/authors/${authors.id}"> ${authors.lastName} ${authors.firstName} ${authors.patronymic}</a>
+                <form:form action="/books/${book.id}/authors/${authors.id}/delete">
+                    <button>Удалить</button>
+                </form:form>
                 </p>
             </c:forEach>
         </div>
@@ -78,24 +81,11 @@
                     <form:form method="POST" modelAttribute="addAuthor"
                                action="/books/${book.id}/authors">
                         <div>
-                            <form:input type="number" path="authorId" placeholder="id автора" autofocus="true"/>
-                            <form:errors path="authorId"/>
+                            <form:input type="number" path="id" placeholder="id автора" autofocus="true"/>
+                            <form:errors path="id"/>
                         </div>
 
                         <button type="submit">Добавить</button>
-                    </form:form>
-
-                </h4>
-
-                <h4>
-                    <form:form method="DELETE" modelAttribute="deleteAuthor"
-                               action="/books/${book.id}/authors/delete">
-                        <div>
-                            <form:input type="number" path="deleteAuthorId" placeholder="id автора" autofocus="true"/>
-                            <form:errors path="deleteAuthorId"/>
-                        </div>
-
-                        <button type="submit">Удалить</button>
                     </form:form>
 
                 </h4>

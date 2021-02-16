@@ -1,9 +1,8 @@
 package edu.asoldatov.library.service;
 
 
-import edu.asoldatov.library.dto.request.AddAuthorToBookDtoRequest;
 import edu.asoldatov.library.dto.request.BookDtoRequest;
-import edu.asoldatov.library.dto.request.DeleteAuthorFromBookDtoRequest;
+import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
 import edu.asoldatov.library.erroritem.exception.ServerException;
 import edu.asoldatov.library.model.User;
@@ -23,7 +22,7 @@ public interface BookService {
 
     BookDtoResponse getBook(long bookId) throws ServerException;
 
-    BookDtoResponse addAuthor(AddAuthorToBookDtoRequest request, long bookId) throws ServerException;
+    BookDtoResponse addAuthor(IdDto idDto, long bookId) throws ServerException;
 
-    BookDtoResponse deleteAuthor(DeleteAuthorFromBookDtoRequest request, long bookId) throws ServerException;
+    BookDtoResponse deleteAuthor(long authorId, long bookId) throws ServerException;
 }
