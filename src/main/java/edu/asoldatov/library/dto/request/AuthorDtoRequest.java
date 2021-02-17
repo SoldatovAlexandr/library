@@ -5,25 +5,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthorDtoRequest {
-    @NotNull(message = "key")
-
+    @NotBlank(message = "{blank.firstname}")
     private String firstName;
 
-    @NotNull(message = "LAST_NAME_NOT_SET")
+    @NotBlank(message = "{blank.lastname}")
     private String lastName;
 
-    @NotNull(message = "PATRONYMIC_NOT_SET")
+    @NotBlank(message = "{blank.patronymic}")
     private String patronymic;
 
-    @NotNull(message = "YEAR_OF_BIRTH_NOT_SET")
+    @Max(value = 2021, message = "{invalid.year}")
+    @Min(value = 0, message = "{negative.year}")
+    @NotNull(message = "{blank.year}")
     private Integer yearOfBirth;
 
-    @NotNull(message = "BIOGRAPHY_NOT_SET")
+    @NotBlank(message = "{blank.biography}")
     private String biography;
 }

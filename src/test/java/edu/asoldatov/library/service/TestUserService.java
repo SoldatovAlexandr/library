@@ -3,7 +3,7 @@ package edu.asoldatov.library.service;
 import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.request.UserDtoRequest;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
-import edu.asoldatov.library.erroritem.exception.ServerException;
+import edu.asoldatov.library.exception.ServerException;
 import edu.asoldatov.library.model.Role;
 import edu.asoldatov.library.model.User;
 import edu.asoldatov.library.repository.RoleRepository;

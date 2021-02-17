@@ -4,14 +4,13 @@ import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.mapper.UserDtoMapper;
 import edu.asoldatov.library.dto.request.UserDtoRequest;
 import edu.asoldatov.library.dto.response.UserDtoResponse;
-import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
-import edu.asoldatov.library.erroritem.exception.ServerException;
+import edu.asoldatov.library.exception.ServerException;
 import edu.asoldatov.library.model.Role;
 import edu.asoldatov.library.model.User;
 import edu.asoldatov.library.repository.RoleRepository;
 import edu.asoldatov.library.repository.UserRepository;
 import edu.asoldatov.library.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
     private final static UserDtoMapper USER_DTO_MAPPER = UserDtoMapper.INSTANCE;
@@ -31,20 +31,10 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    @Autowired
-    public UserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder,
-                           UserRepository userRepository,
-                           RoleRepository roleRepository) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
     }
-
 
     @Override
     public List<UserDtoResponse> allUsers() {
@@ -53,13 +43,12 @@ public class UserServiceImpl implements UserService {
         return USER_DTO_MAPPER.toUserDtoResponses(users);
     }
 
-
     @Override
     public UserDtoResponse registerUser(UserDtoRequest userDtoRequest) throws ServerException {
         User user = USER_DTO_MAPPER.toUser(userDtoRequest);
 
         if (hasUsername(user.getUsername())) {
-            throw new ServerException(ServerErrorCodeWithField.WRONG_USERNAME);
+            throw new ServerException("taken.username");
         }
 
         setRoles(user);
@@ -75,7 +64,7 @@ public class UserServiceImpl implements UserService {
     public void addAdminRole(IdDto idDto) throws ServerException {
         long userId = idDto.getId();
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_USER_ID));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ServerException("wrong.user.id"));
 
         Role role = getRoleByName(ADMIN);
 
@@ -83,7 +72,6 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
     }
-
 
     private void setRoles(User user) throws ServerException {
         Set<Role> userRoles = new HashSet<>();
@@ -96,10 +84,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private Role getRoleByName(String roleName) throws ServerException {
-        return roleRepository.findByName(roleName).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.EMPTY_DATABASE));
+        return roleRepository.findByName(roleName).orElseThrow(() -> new ServerException("empty.database"));
     }
 
-    protected boolean hasUsername(String username) {
+    private boolean hasUsername(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
 }

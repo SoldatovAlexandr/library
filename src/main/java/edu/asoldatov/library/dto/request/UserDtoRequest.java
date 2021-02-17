@@ -13,25 +13,26 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @ConfirmPasswords(password = "password", confirmPassword = "passwordConfirm")
 public class UserDtoRequest {
-    @Size(min = 2, message = "Не меньше 5 знаков")
+
+    @Size(min = 2, message = "{short.length}")
     private String username;
 
-    @Size(min = 2, message = "Не меньше 5 знаков")
+    @Size(min = 2, message = "{short.length}")
     private String password;
 
     private String passwordConfirm;
 
-    @NotBlank(message = "Имя не может быть пустым")
+    @NotBlank(message = "{blank.firstname}")
     private String firstName;
 
-    @NotBlank(message = "Фамилия не может быть пустой")
+    @NotBlank(message = "{blank.lastname}")
     private String lastName;
 
-    @NotBlank(message = "Отчество не может быть пустым")
+    @NotBlank(message = "{blank.patronymic}")
     private String patronymic;
 
-    @Max(value = 2021, message = "Не корректный год рождения")
-    @Min(value = 0, message = "Год рождения не может быть отрицательным")
-    @NotNull(message = "Год рождения не может быть пустым")
+    @Max(value = 2021, message = "{invalid.year}")
+    @Min(value = 0, message = "{negative.year}")
+    @NotNull(message = "{blank.year}")
     private Integer yearOfBirth;
 }

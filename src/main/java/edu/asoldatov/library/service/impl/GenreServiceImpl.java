@@ -3,26 +3,21 @@ package edu.asoldatov.library.service.impl;
 import edu.asoldatov.library.dto.mapper.GenreDtoMapper;
 import edu.asoldatov.library.dto.request.GenreDtoRequest;
 import edu.asoldatov.library.dto.response.GenreDtoResponse;
-import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
-import edu.asoldatov.library.erroritem.exception.ServerException;
+import edu.asoldatov.library.exception.ServerException;
 import edu.asoldatov.library.model.Genre;
 import edu.asoldatov.library.repository.GenreRepository;
 import edu.asoldatov.library.service.GenreService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class GenreServiceImpl implements GenreService {
 
     private final static GenreDtoMapper GENRE_DTO_MAPPER = GenreDtoMapper.INSTANCE;
     private final GenreRepository genreRepository;
-
-    @Autowired
-    public GenreServiceImpl(GenreRepository genreRepository) {
-        this.genreRepository = genreRepository;
-    }
 
 
     @Override
@@ -69,6 +64,6 @@ public class GenreServiceImpl implements GenreService {
     }
 
     private Genre getGenreById(long genreId) throws ServerException {
-        return genreRepository.findById(genreId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_GENRE_ID));
+        return genreRepository.findById(genreId).orElseThrow(() -> new ServerException("wrong.genre.id"));
     }
 }

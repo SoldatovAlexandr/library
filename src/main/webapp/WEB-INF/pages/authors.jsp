@@ -20,12 +20,12 @@
 
             <div>
                 <form:input type="text" path="lastName" placeholder="lastName" autofocus="true"/>
-                <form:errors path="firstName"/>
+                <form:errors path="lastName"/>
             </div>
 
             <div>
                 <form:input type="text" path="patronymic" placeholder="patronymic" autofocus="true"/>
-                <form:errors path="firstName"/>
+                <form:errors path="patronymic"/>
             </div>
 
             <div>

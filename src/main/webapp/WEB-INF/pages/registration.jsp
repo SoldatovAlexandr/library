@@ -17,38 +17,33 @@
         <div>
             <form:input type="text" path="username" placeholder="Username" autofocus="true"/>
             <form:errors path="username"/>
-                ${usernameError}
         </div>
         <div>
             <form:input type="password" path="password" placeholder="Password"/>
+            <form:errors path="password"/>
         </div>
         <div>
             <form:input type="password" path="passwordConfirm" placeholder="Confirm your password"/>
-            <form:errors path="password"/>
-                ${passwordError}
+            <form:errors path="passwordConfirm"/>
         </div>
 
         <div>
             <form:input type="text" path="firstName" placeholder="FirsName" autofocus="true"/>
             <form:errors path="firstName"/>
-                ${firstNameError}
         </div>
         <div>
             <form:input type="text" path="lastName" placeholder="LastName" autofocus="true"/>
             <form:errors path="lastName"/>
-                ${lastNameError}
         </div>
 
         <div>
             <form:input type="text" path="patronymic" placeholder="patronymic" autofocus="true"/>
             <form:errors path="patronymic"/>
-                ${patronymicError}
         </div>
 
         <div>
             <form:input type="number" path="yearOfBirth" placeholder="yearOfBirth" autofocus="true"/>
             <form:errors path="yearOfBirth"/>
-                ${yearOfBirthError}
         </div>
 
         <button type="submit">Зарегистрироваться</button>

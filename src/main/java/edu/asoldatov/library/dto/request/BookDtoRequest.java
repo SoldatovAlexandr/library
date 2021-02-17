@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -11,12 +14,14 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class BookDtoRequest {
 
-    @NotNull(message = "NAME_NOT_SET")
+    @NotBlank(message = "{blank.book.name}")
     private String name;
 
-    @NotNull(message = "YEAR_OF_PUBLISHING_NOT_SET")
+    @Max(value = 2021, message = "{invalid.year}")
+    @Min(value = 0, message = "{negative.year}")
+    @NotNull(message = "{blank.year}")
     private Integer yearOfPublishing;
 
-    @NotNull(message = "GENRE_ID_NOT_SET")
+    @NotNull(message = "{blank.id}")
     private Long genreId;
 }

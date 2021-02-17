@@ -3,37 +3,34 @@ package edu.asoldatov.library.controllers;
 import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.request.BookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
-import edu.asoldatov.library.erroritem.exception.ServerException;
+import edu.asoldatov.library.exception.ServerException;
 import edu.asoldatov.library.model.User;
 import edu.asoldatov.library.service.BookService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @Controller
+@RequiredArgsConstructor
 public class BookController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
 
     private final BookService bookService;
 
-    @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
 
-    @GetMapping(path = "/books")
+    @RequestMapping(path = "/books", method = RequestMethod.GET)
     public String getBooksPage(Model model) {
-        LOGGER.info("BookController get books page");
+        log.info("BookController get books page");
 
         List<BookDtoResponse> books = bookService.getAllBooks();
 
@@ -44,12 +41,15 @@ public class BookController {
         return "books";
     }
 
-    @PostMapping(path = "/books")
+    @RequestMapping(path = "/books", method = RequestMethod.POST)
     public String addBook(@ModelAttribute(name = "book") @Valid BookDtoRequest bookDtoRequest,
+                          BindingResult bindingResult,
                           Model model) throws ServerException {
-        LOGGER.info("BookController add book");
+        log.info("BookController add book");
 
-        bookService.createBook(bookDtoRequest);
+        if (!bindingResult.hasErrors()) {
+            bookService.createBook(bookDtoRequest);
+        }
 
         List<BookDtoResponse> books = bookService.getAllBooks();
 
@@ -58,9 +58,9 @@ public class BookController {
         return "books";
     }
 
-    @GetMapping(path = "/books/{bookId}")
+    @RequestMapping(path = "/books/{bookId}", method = RequestMethod.GET)
     public String getBookPage(Model model, @PathVariable("bookId") long bookId) throws ServerException {
-        LOGGER.info("BookController get book page");
+        log.info("BookController get book page");
 
         BookDtoResponse book = bookService.getBook(bookId);
 
@@ -73,29 +73,37 @@ public class BookController {
         return "book";
     }
 
-    @PostMapping(path = "/books/{bookId}")
+    @RequestMapping(path = "/books/{bookId}", method = RequestMethod.POST)
     public String updateBook(Model model,
                              @PathVariable("bookId") long bookId,
-                             BookDtoRequest bookDtoRequest) throws ServerException {
-        LOGGER.info("BookController update book");
+                             @ModelAttribute(name = "updateBook") @Valid BookDtoRequest bookDtoRequest,
+                             BindingResult bindingResult
+    ) throws ServerException {
+        log.info("BookController update book");
 
-        BookDtoResponse book = bookService.updateBook(bookDtoRequest, bookId);
+        BookDtoResponse book;
+
+        if (!bindingResult.hasErrors()) {
+            book = bookService.updateBook(bookDtoRequest, bookId);
+
+            model.addAttribute("updateBook", new BookDtoRequest());
+        } else {
+            book = bookService.getBook(bookId);
+        }
 
         model.addAttribute("book", book);
 
         model.addAttribute("addAuthor", new IdDto());
 
-        model.addAttribute("updateBook", new BookDtoRequest());
-
         return "book";
     }
 
-    @PostMapping(path = "/books/{bookId}/authors")
+    @RequestMapping(path = "/books/{bookId}/authors", method = RequestMethod.POST)
     public String addAuthorToBook(Model model,
                                   @PathVariable("bookId") long bookId,
                                   IdDto idDto
     ) throws ServerException {
-        LOGGER.info("BookController add author to the book");
+        log.info("BookController add author to the book");
 
         BookDtoResponse book = bookService.addAuthor(idDto, bookId);
 
@@ -108,12 +116,12 @@ public class BookController {
         return "book";
     }
 
-    @PostMapping(path = "/books/{bookId}/authors/{authorId}/delete")
+    @RequestMapping(path = "/books/{bookId}/authors/{authorId}/delete", method = RequestMethod.POST)
     public String deleteAuthorFromBook(Model model,
                                        @PathVariable("bookId") long bookId,
                                        @PathVariable("authorId") long authorId
     ) throws ServerException {
-        LOGGER.info("BookController delete author from the book");
+        log.info("BookController delete author from the book");
 
         BookDtoResponse book = bookService.deleteAuthor(authorId, bookId);
 
@@ -126,11 +134,11 @@ public class BookController {
         return "book";
     }
 
-    @PostMapping(value = "/books/{bookId}/take")
+    @RequestMapping(path = "/books/{bookId}/take", method = RequestMethod.POST)
     public String takeBook(@PathVariable("bookId") long bookId,
                            Model model,
                            @AuthenticationPrincipal User user) throws ServerException {
-        LOGGER.info("BookController take the book");
+        log.info("BookController take the book");
 
         BookDtoResponse book = bookService.takeBook(bookId, user);
 
@@ -143,14 +151,32 @@ public class BookController {
         return "book";
     }
 
-
-    @PostMapping(value = "/books/{bookId}/return")
+    @RequestMapping(path = "/books/{bookId}/return", method = RequestMethod.POST)
     public String returnBook(@PathVariable("bookId") long bookId,
                              Model model,
                              @AuthenticationPrincipal User user) throws ServerException {
-        LOGGER.info("BookController return book");
+        log.info("BookController return book");
 
         BookDtoResponse book = bookService.returnBook(bookId, user);
+
+        model.addAttribute("book", book);
+
+        model.addAttribute("addAuthor", new IdDto());
+
+        model.addAttribute("updateBook", new BookDtoRequest());
+
+        return "book";
+    }
+
+    @RequestMapping(path = "/books/{bookId}/genres/{genreId}/delete", method = RequestMethod.POST)
+    public String deleteGenreFromBook(
+            Model model,
+            @PathVariable("genreId") long genreId,
+            @PathVariable("bookId") long bookId
+    ) throws ServerException {
+        log.info("GenreController delete genre from book");
+
+        BookDtoResponse book = bookService.deleteGenre(bookId, genreId);
 
         model.addAttribute("book", book);
 

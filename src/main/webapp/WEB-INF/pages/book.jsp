@@ -33,6 +33,9 @@
             <c:forEach items="${book.genres}" var="genres">
                 <p>
                     <a href="/genres/${genres.id}"> ${genres.name}</a>
+                    <form:form action="/books/${book.id}/genres/${genres.id}/delete">
+                        <button>Удалить</button>
+                    </form:form>
                 </p>
             </c:forEach>
         </div>
@@ -67,12 +70,12 @@
                         </div>
 
                         <div>
-                            <form:input type="number" value="1" path="genreId"
+                            <form:input type="number"  path="genreId"
                                         placeholder="Добавить жанр" autofocus="true"/>
                             <form:errors path="genreId"/>
                         </div>
 
-                        <button type="submit">Добавить</button>
+                        <button type="submit">Обновить</button>
 
                     </form:form>
                 </h4>

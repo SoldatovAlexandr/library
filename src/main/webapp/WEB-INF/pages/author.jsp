@@ -22,13 +22,13 @@
             <div>
                 <form:input type="text" path="lastName" placeholder="lastName" autofocus="true"
                             value="${author.lastName}"/>
-                <form:errors path="firstName"/>
+                <form:errors path="lastName"/>
             </div>
 
             <div>
                 <form:input type="text" path="patronymic" placeholder="patronymic" autofocus="true"
                             value="${author.patronymic}"/>
-                <form:errors path="firstName"/>
+                <form:errors path="patronymic"/>
             </div>
 
             <div>

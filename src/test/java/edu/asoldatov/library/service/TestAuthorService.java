@@ -1,11 +1,9 @@
 package edu.asoldatov.library.service;
 
-import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.request.AuthorDtoRequest;
 import edu.asoldatov.library.dto.response.AuthorDtoResponse;
-import edu.asoldatov.library.erroritem.exception.ServerException;
+import edu.asoldatov.library.exception.ServerException;
 import edu.asoldatov.library.model.Author;
-import edu.asoldatov.library.model.Book;
 import edu.asoldatov.library.repository.AuthorRepository;
 import edu.asoldatov.library.repository.BookRepository;
 import edu.asoldatov.library.service.impl.AuthorServiceImpl;
@@ -28,15 +26,12 @@ import static org.mockito.Mockito.when;
 public class TestAuthorService {
 
     @MockBean
-    private BookRepository bookRepository;
-
-    @MockBean
     private AuthorRepository authorRepository;
 
 
     @Test
     public void testCreateAuthor() {
-        AuthorService authorService = new AuthorServiceImpl(authorRepository, bookRepository);
+        AuthorService authorService = new AuthorServiceImpl(authorRepository);
 
         AuthorDtoRequest authorDtoRequest = new AuthorDtoRequest("firstname", "lastname", "patronymic", 2000, "biography");
 
@@ -52,7 +47,7 @@ public class TestAuthorService {
 
     @Test
     public void testUpdateAuthor() throws ServerException {
-        AuthorService authorService = new AuthorServiceImpl(authorRepository, bookRepository);
+        AuthorService authorService = new AuthorServiceImpl(authorRepository);
 
         Author author = new Author(1L, "Иван", "Иванов", "Иванович", 1980, "Биография", new ArrayList<>());
 
@@ -72,7 +67,7 @@ public class TestAuthorService {
 
     @Test
     public void testGetAuthor() throws ServerException {
-        AuthorService authorService = new AuthorServiceImpl(authorRepository, bookRepository);
+        AuthorService authorService = new AuthorServiceImpl(authorRepository);
 
         Author author = new Author(1L, "Иван", "Иванов", "Иванович", 1980, "Биография", new ArrayList<>());
 
@@ -90,7 +85,7 @@ public class TestAuthorService {
 
     @Test
     public void testGetAllAuthors() {
-        AuthorService authorService = new AuthorServiceImpl(authorRepository, bookRepository);
+        AuthorService authorService = new AuthorServiceImpl(authorRepository);
 
         List<Author> authors = new ArrayList<>();
 
@@ -105,52 +100,6 @@ public class TestAuthorService {
         Assertions.assertAll(
                 () -> verify(authorRepository).findAll(),
                 () -> Assertions.assertEquals(2, responses.size())
-        );
-    }
-
-    @Test
-    public void testAddBookToAuthor() throws ServerException {
-        AuthorService authorService = new AuthorServiceImpl(authorRepository, bookRepository);
-
-        Author author = new Author(1L, "Иван", "Иванов", "Иванович", 1980, "Биография", new ArrayList<>());
-
-        Book book = new Book(10L, "name", 2000, null, new HashSet<>(), new HashSet<>());
-
-        IdDto idDto = new IdDto(10L);
-
-        when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
-
-        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
-
-        authorService.addBookToAuthor(1L, idDto);
-
-        Assertions.assertAll(
-                () -> verify(authorRepository).findById(1L),
-                () -> verify(authorRepository).save(any())
-        );
-    }
-
-    @Test
-    public void testDeleteBookFromAuthor() throws ServerException {
-        AuthorService authorService = new AuthorServiceImpl(authorRepository, bookRepository);
-
-        Author author = new Author(1L, "Иван", "Иванов", "Иванович", 1980, "Биография", new ArrayList<>());
-
-        Book book = new Book(10L, "name", 2000, null, new HashSet<>(), new HashSet<>());
-
-        book.getAuthors().add(author);
-
-        IdDto idDto = new IdDto(10L);
-
-        when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
-
-        when(bookRepository.findById(10L)).thenReturn(Optional.of(book));
-
-        authorService.deleteBookFromAuthor(1L, idDto);
-
-        Assertions.assertAll(
-                () -> verify(authorRepository).findById(1L),
-                () -> verify(authorRepository).save(any())
         );
     }
 }

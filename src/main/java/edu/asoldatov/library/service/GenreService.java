@@ -2,7 +2,7 @@ package edu.asoldatov.library.service;
 
 import edu.asoldatov.library.dto.request.GenreDtoRequest;
 import edu.asoldatov.library.dto.response.GenreDtoResponse;
-import edu.asoldatov.library.erroritem.exception.ServerException;
+import edu.asoldatov.library.exception.ServerException;
 
 import java.util.List;
 

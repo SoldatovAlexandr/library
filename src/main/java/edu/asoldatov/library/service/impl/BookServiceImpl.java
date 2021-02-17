@@ -4,8 +4,7 @@ import edu.asoldatov.library.dto.IdDto;
 import edu.asoldatov.library.dto.mapper.BookDtoMapper;
 import edu.asoldatov.library.dto.request.BookDtoRequest;
 import edu.asoldatov.library.dto.response.BookDtoResponse;
-import edu.asoldatov.library.erroritem.code.ServerErrorCodeWithField;
-import edu.asoldatov.library.erroritem.exception.ServerException;
+import edu.asoldatov.library.exception.ServerException;
 import edu.asoldatov.library.model.Author;
 import edu.asoldatov.library.model.Book;
 import edu.asoldatov.library.model.Genre;
@@ -14,12 +13,13 @@ import edu.asoldatov.library.repository.AuthorRepository;
 import edu.asoldatov.library.repository.BookRepository;
 import edu.asoldatov.library.repository.GenreRepository;
 import edu.asoldatov.library.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -27,13 +27,6 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final GenreRepository genreRepository;
     private final AuthorRepository authorRepository;
-
-    @Autowired
-    public BookServiceImpl(BookRepository bookRepository, GenreRepository genreRepository, AuthorRepository authorRepository) {
-        this.bookRepository = bookRepository;
-        this.genreRepository = genreRepository;
-        this.authorRepository = authorRepository;
-    }
 
     @Override
     public BookDtoResponse createBook(BookDtoRequest bookDtoRequest) throws ServerException {
@@ -73,7 +66,7 @@ public class BookServiceImpl implements BookService {
         Book book = getBookById(bookId);
 
         if (book.getUser() != null) {
-            throw new ServerException(ServerErrorCodeWithField.BOOK_TAKEN);
+            throw new ServerException("book.taken");
         }
 
         book.setUser(user);
@@ -90,7 +83,7 @@ public class BookServiceImpl implements BookService {
         User owner = book.getUser();
 
         if (!user.equals(owner)) {
-            throw new ServerException(ServerErrorCodeWithField.NO_PERMISSION);
+            throw new ServerException("no.permission");
         }
 
         book.setUser(null);
@@ -144,15 +137,28 @@ public class BookServiceImpl implements BookService {
         return BOOK_DTO_MAPPER.toBookDtoResponse(book);
     }
 
+    @Override
+    public BookDtoResponse deleteGenre(long bookId, long genreId) throws ServerException {
+        Book book = getBookById(bookId);
+
+        Genre genre = getGenreById(genreId);
+
+        book.getGenres().remove(genre);
+
+        bookRepository.save(book);
+
+        return BOOK_DTO_MAPPER.toBookDtoResponse(book);
+    }
+
     private Genre getGenreById(long genreId) throws ServerException {
-        return genreRepository.findById(genreId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_GENRE_ID));
+        return genreRepository.findById(genreId).orElseThrow(() -> new ServerException("wrong.genre.id"));
     }
 
     private Book getBookById(long bookId) throws ServerException {
-        return bookRepository.findById(bookId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_BOOK_ID));
+        return bookRepository.findById(bookId).orElseThrow(() -> new ServerException("wrong.book.id"));
     }
 
     private Author getAuthorById(Long authorId) throws ServerException {
-        return authorRepository.findById(authorId).orElseThrow(() -> new ServerException(ServerErrorCodeWithField.WRONG_AUTHOR_ID));
+        return authorRepository.findById(authorId).orElseThrow(() -> new ServerException("wrong.author.id"));
     }
 }
