@@ -8,21 +8,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping
+@RequestMapping(path = "/admin")
 @RequiredArgsConstructor
 public class AdminController {
 
     private final UserService userService;
 
-    @RequestMapping(path = "/admin", method = RequestMethod.GET)
+    @GetMapping
     public String getAllUsers(Model model) {
         log.info("AdminController get all users");
 
@@ -35,7 +36,7 @@ public class AdminController {
         return "admin";
     }
 
-    @RequestMapping(path = "/admin", method = RequestMethod.POST)
+    @PostMapping
     public String addAdminRole(Model model, @ModelAttribute("addUser") IdDto idDto) throws ServerException {
         log.info("AdminController add new admin");
 

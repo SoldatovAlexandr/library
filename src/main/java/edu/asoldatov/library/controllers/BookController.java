@@ -12,10 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,12 +20,13 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
 
 
-    @RequestMapping(path = "/books", method = RequestMethod.GET)
+    @GetMapping
     public String getBooksPage(Model model) {
         log.info("BookController get books page");
 
@@ -41,7 +39,7 @@ public class BookController {
         return "books";
     }
 
-    @RequestMapping(path = "/books", method = RequestMethod.POST)
+    @PostMapping
     public String addBook(@ModelAttribute(name = "book") @Valid BookDtoRequest bookDtoRequest,
                           BindingResult bindingResult,
                           Model model) throws ServerException {
@@ -58,7 +56,7 @@ public class BookController {
         return "books";
     }
 
-    @RequestMapping(path = "/books/{bookId}", method = RequestMethod.GET)
+    @GetMapping(path = "/{bookId}")
     public String getBookPage(Model model, @PathVariable("bookId") long bookId) throws ServerException {
         log.info("BookController get book page");
 
@@ -73,7 +71,7 @@ public class BookController {
         return "book";
     }
 
-    @RequestMapping(path = "/books/{bookId}", method = RequestMethod.POST)
+    @PostMapping(path = "/{bookId}")
     public String updateBook(Model model,
                              @PathVariable("bookId") long bookId,
                              @ModelAttribute(name = "updateBook") @Valid BookDtoRequest bookDtoRequest,
@@ -98,7 +96,7 @@ public class BookController {
         return "book";
     }
 
-    @RequestMapping(path = "/books/{bookId}/authors", method = RequestMethod.POST)
+    @PostMapping(path = "/{bookId}/authors")
     public String addAuthorToBook(Model model,
                                   @PathVariable("bookId") long bookId,
                                   IdDto idDto
@@ -116,7 +114,7 @@ public class BookController {
         return "book";
     }
 
-    @RequestMapping(path = "/books/{bookId}/authors/{authorId}/delete", method = RequestMethod.POST)
+    @PostMapping(path = "/{bookId}/authors/{authorId}/delete")
     public String deleteAuthorFromBook(Model model,
                                        @PathVariable("bookId") long bookId,
                                        @PathVariable("authorId") long authorId
@@ -134,7 +132,7 @@ public class BookController {
         return "book";
     }
 
-    @RequestMapping(path = "/books/{bookId}/take", method = RequestMethod.POST)
+    @PostMapping(path = "/{bookId}/take")
     public String takeBook(@PathVariable("bookId") long bookId,
                            Model model,
                            @AuthenticationPrincipal User user) throws ServerException {
@@ -151,7 +149,7 @@ public class BookController {
         return "book";
     }
 
-    @RequestMapping(path = "/books/{bookId}/return", method = RequestMethod.POST)
+    @PostMapping(path = "/{bookId}/return")
     public String returnBook(@PathVariable("bookId") long bookId,
                              Model model,
                              @AuthenticationPrincipal User user) throws ServerException {
@@ -168,7 +166,7 @@ public class BookController {
         return "book";
     }
 
-    @RequestMapping(path = "/books/{bookId}/genres/{genreId}/delete", method = RequestMethod.POST)
+    @PostMapping(path = "/{bookId}/genres/{genreId}/delete")
     public String deleteGenreFromBook(
             Model model,
             @PathVariable("genreId") long genreId,

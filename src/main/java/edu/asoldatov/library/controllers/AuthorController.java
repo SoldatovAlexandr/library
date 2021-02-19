@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -20,11 +17,12 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
 
-    @RequestMapping(path = "/authors", method = RequestMethod.GET)
+    @GetMapping
     public String getAuthorsPage(Model model) {
         log.info("AuthorController get authors page");
 
@@ -37,7 +35,7 @@ public class AuthorController {
         return "authors";
     }
 
-    @RequestMapping(path = "/authors", method = RequestMethod.POST)
+    @PostMapping
     public String addAuthor(@ModelAttribute(name = "author") @Valid AuthorDtoRequest authorDtoRequest,
                             BindingResult bindingResult,
                             Model model) {
@@ -54,7 +52,7 @@ public class AuthorController {
         return "authors";
     }
 
-    @RequestMapping(path = "/authors/{authorId}", method = RequestMethod.GET)
+    @GetMapping(path = "/{authorId}")
     public String getAuthorPage(Model model, @PathVariable("authorId") long authorId) throws ServerException {
         log.info("AuthorController get author page");
 
@@ -67,7 +65,7 @@ public class AuthorController {
         return "author";
     }
 
-    @RequestMapping(path = "/authors/{authorId}", method = RequestMethod.POST)
+    @PostMapping(path = "/authors/{authorId}")
     public String updateAuthor(Model model,
                                @ModelAttribute(name = "updateAuthor") @Valid AuthorDtoRequest authorDtoRequest,
                                BindingResult bindingResult,

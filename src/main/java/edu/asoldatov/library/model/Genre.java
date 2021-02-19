@@ -1,6 +1,7 @@
 package edu.asoldatov.library.model;
 
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 @Data
 @NoArgsConstructor
 @Entity
+@Builder(toBuilder = true)
 public class Genre extends AbstractPersistable<Long> {
 
     private String name;

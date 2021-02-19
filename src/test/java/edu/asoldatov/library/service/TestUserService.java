@@ -97,7 +97,7 @@ public class TestUserService {
     public void testRegisterUser() throws ServerException {
         UserService userService = new UserServiceImpl(bCryptPasswordEncoder, userRepository, roleRepository);
 
-        Role role = new Role(1L, ROLE_USER);
+        Role role = Role.builder().name(ROLE_USER).build();
 
         when(userRepository.findByUsername(USER_NAME)).thenReturn(Optional.empty());
 
@@ -145,7 +145,7 @@ public class TestUserService {
 
         User user = new User(1L, USER_NAME, PASSWORD, new HashSet<>(), FIRST_NAME, LAST_NAME, PATRONYMIC, YEAR_OF_BIRTH);
 
-        Role role = new Role(2L, ROLE_ADMIN);
+        Role role = Role.builder().name(ROLE_ADMIN).build();
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 

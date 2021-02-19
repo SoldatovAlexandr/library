@@ -47,11 +47,11 @@ public class TestBookService {
     public void testCreateBook() throws ServerException {
         BookService bookService = new BookServiceImpl(bookRepository, genreRepository, authorRepository);
 
-        Genre genre = new Genre(1L, "genre");
+        Genre genre = Genre.builder().name("name").build();
 
-        when(genreRepository.findById(1L)).thenReturn(Optional.of(genre));
+        when(genreRepository.findById(0L)).thenReturn(Optional.of(genre));
 
-        BookDtoRequest bookDtoRequest = new BookDtoRequest("name", 2000, 1L);
+        BookDtoRequest bookDtoRequest = new BookDtoRequest("name", 2000, 0L);
 
         BookDtoResponse response = bookService.createBook(bookDtoRequest);
 
